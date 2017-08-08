@@ -2,11 +2,10 @@
 [![NPM Version](https://img.shields.io/npm/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
 [![Coverage Status](https://coveralls.io/repos/github/realspeaker/telegraf-session-local/badge.svg?branch=master)](https://coveralls.io/github/realspeaker/telegraf-session-local?branch=master)
 [![Dependency Status](https://david-dm.org/realspeaker/telegraf-session-local.svg)](https://david-dm.org/realspeaker/telegraf-session-local)
+[![Greenkeeper badge](https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg)](https://greenkeeper.io/)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 
 # [Telegraf](https://github.com/telegraf/telegraf) local sessions middleware
-
-[![Greenkeeper badge](https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg)](https://greenkeeper.io/)
 
 Multiple types of storage supported: `Memory`, `fileSync`, `fileAsync`, ...
 
