@@ -6,6 +6,8 @@
 
 # [Telegraf](https://github.com/telegraf/telegraf) local sessions middleware
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg)](https://greenkeeper.io/)
+
 Multiple types of storage supported: `Memory`, `fileSync`, `fileAsync`, ...
 
 Multiple file formats supported: `JSON`, `BSON`, `YAML`, `XML`, ...
