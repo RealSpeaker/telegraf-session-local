@@ -1,9 +1,10 @@
 [![NPM Version](https://img.shields.io/npm/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
+[![node](https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
 [![Build Status](https://travis-ci.org/RealSpeaker/telegraf-session-local.svg?branch=master)](https://travis-ci.org/realspeaker/telegraf-session-local)
 [![Coverage Status](https://coveralls.io/repos/github/RealSpeaker/telegraf-session-local/badge.svg?branch=master)](https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master)
 [![Dependency Status](https://david-dm.org/realspeaker/telegraf-session-local.svg)](https://david-dm.org/realspeaker/telegraf-session-local)
-[![Greenkeeper badge](https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg)](https://greenkeeper.io/)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg)](https://greenkeeper.io/)
 
 # [Telegraf](https://github.com/telegraf/telegraf) local sessions middleware
 
@@ -25,7 +26,7 @@ $ npm install telegraf-session-local -S
 ```js
 const
   Telegraf = require('telegraf'),
-  LocalSession = require('../lib/session')
+  LocalSession = require('telegraf-session-local')
 
 const Bot = new Telegraf(process.env.BOT_TOKEN)
 
@@ -55,7 +56,7 @@ Bot.startPolling()
 ```js
 const
   Telegraf = require('telegraf'),
-  LocalSession = require('../lib/session')
+  LocalSession = require('telegraf-session-local')
 
 const Bot = new Telegraf(process.env.BOT_TOKEN)
 
@@ -110,8 +111,6 @@ Also, you may read comments in  `/lib/session.js`
 
 ## 🎓 Licence &amp; copyright
 
-* * *
-
-&copy; 2017 Tema Smirnov <github.tema@smirnov.one> [![Telegram](https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg)](https://t.me/TemaSM)
+&copy; 2017 Tema Smirnov / <github.tema@smirnov.one> / [![Telegram](https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg)](https://goo.gl/YeV4gk)
 
 MIT - [RealSpeaker Group Ltd.](https://github.com/RealSpeaker)
