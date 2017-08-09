@@ -1,86 +1,85 @@
 {
-	"name": "telegraf-session-local",
-	"version": "0.0.1",
-	"description": "Telegraf local sessions middleware with multiple supported storage types (memory/fileSync/fileAsync/...) using lowdb",
-	"main": "lib/session.js",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/realspeaker/telegraf-session-local.git"
-	},
-	"keywords": [
-		"telegram",
-		"telegram bot",
-		"telegraf",
-		"telegraf session",
-		"session",
-		"middleware",
-		"database",
-		"local database",
-		"json",
-		"lowdb",
-		"db"
-	],
-	"author": "Tema Smirnov <npm.tema@smirnov.one>",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/realspeaker/telegraf-session-local/issues"
-	},
-	"homepage": "https://github.com/realspeaker/telegraf-session-local#readme",
-	"engines": {
-		"node": ">=6.2.1"
-	},
-	"files": [
-		"lib/session.js"
-	],
-	"scripts": {
-		"test": "eslint . --fix && mocha tests --require should",
-		"jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json"
-	},
-	"eslintConfig": {
-		"extends": [
-			"standard"
-		],
-		"plugins": [
-			"mocha"
-		],
-		"env": {
-			"mocha": true,
-			"node": true
-		},
-		"rules": {
-			"indent": [
-				2,
-				"tab"
-			],
-			"no-tabs": 0,
-			"one-var": 0,
-			"no-mixed-spaces-and-tabs": 0,
-			"comma-dangle": 0
-		}
-	},
-	"eslintIgnore": [
-		"/docs/*"
-	],
-	"dependencies": {
-		"debug": "^2.6.8",
-		"lodash-id": "^0.14.0",
-		"lowdb": "^0.16.2"
-	},
-	"peerDependencies": {
-		"telegraf": "^2.0.0 || ^3.0.0"
-	},
-	"devDependencies": {
-		"docdash": "^0.4.0",
-		"eslint": "^4.4.1",
-		"eslint-config-standard": "^10.2.1",
-		"eslint-plugin-import": "^2.7.0",
-		"eslint-plugin-mocha": "^4.11.0",
-		"eslint-plugin-node": "^5.1.1",
-		"eslint-plugin-promise": "^3.5.0",
-		"eslint-plugin-standard": "^3.0.1",
-		"jsdoc": "^3.5.4",
-		"mocha": "^3.5.0",
-		"should": "^11.2.1",
-		"telegraf": "^2.0.0 || ^3.0.0"
-	}
+  "name": "telegraf-session-local",
+  "version": "0.0.2",
+  "description": "Telegraf local sessions middleware with multiple supported storage types (memory/fileSync/fileAsync/...) using lowdb",
+  "main": "lib/session.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/realspeaker/telegraf-session-local.git"
+  },
+  "keywords": [
+    "telegram",
+    "telegram bot",
+    "telegraf",
+    "telegraf session",
+    "session",
+    "middleware",
+    "database",
+    "local database",
+    "json",
+    "lowdb",
+    "db"
+  ],
+  "author": "Tema Smirnov <npm.tema@smirnov.one>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/realspeaker/telegraf-session-local/issues"
+  },
+  "homepage": "https://github.com/realspeaker/telegraf-session-local#readme",
+  "engines": {
+    "node": ">=6.2.1"
+  },
+  "files": [
+    "lib/session.js"
+  ],
+  "scripts": {
+    "lint": "eslint . --fix",
+    "test": "nyc mocha tests --require should",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json"
+  },
+  "eslintConfig": {
+    "extends": [
+      "standard"
+    ],
+    "plugins": [
+      "mocha"
+    ],
+    "env": {
+      "mocha": true,
+      "node": true
+    },
+    "rules": {
+      "one-var": 0,
+      "no-mixed-spaces-and-tabs": 0,
+      "comma-dangle": 0
+    }
+  },
+  "eslintIgnore": [
+    "docs/*"
+  ],
+  "dependencies": {
+    "debug": "^3.0.0",
+    "lodash-id": "^0.14.0",
+    "lowdb": "^0.16.2"
+  },
+  "peerDependencies": {
+    "telegraf": "^2.0.0 || ^3.0.0"
+  },
+  "devDependencies": {
+    "coveralls": "^2.13.1",
+    "docdash": "^0.4.0",
+    "eslint": "^4.4.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-mocha": "^4.11.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "jsdoc": "^3.5.4",
+    "mocha": "^3.5.0",
+    "nyc": "^11.1.0",
+    "should": "^11.2.1",
+    "telegraf": "^2.0.0 || ^3.0.0"
+  }
 }
