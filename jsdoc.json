@@ -1,37 +1,37 @@
 {
-	"tags": {
-		"allowUnknownTags": true
-	},
-	"source": {
-		"include": [
-			"lib/",
-			"./README.md"
-		],
-		"includePattern": ".js$",
-		"excludePattern": "(node_modules/|docs)"
-	},
-	"plugins": ["plugins/markdown"],
-	"opts": {
-		"encoding": "utf8",
-		"template": "node_modules/docdash",
-		"destination": "docs/",
-		"recurse": true,
-		"verbose": true
-	},
-	"markdown": {
-		"parser": "gfm",
-		"hardwrap": true
-	},
-	"templates": {
-		"cleverLinks": true,
-		"monospaceLinks": true,
-		"default": {
-			"outputSourceFiles": true,
-			"includeDate": false
-		}
-	},
-	"docdash": {
-		"static": false,
-		"sort": false
-	}
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "include": [
+      "lib/",
+      "./README.md"
+    ],
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+  "plugins": ["plugins/markdown"],
+  "opts": {
+    "encoding": "utf8",
+    "template": "node_modules/docdash",
+    "destination": "docs/",
+    "recurse": true,
+    "verbose": true
+  },
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true
+  },
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true,
+    "default": {
+      "outputSourceFiles": true,
+      "includeDate": false
+    }
+  },
+  "docdash": {
+    "static": false,
+    "sort": false
+  }
 }

@@ -1,3 +1,11 @@
+# Code Coverage
+.nyc_output
+coverage
+.self_coverage
+*.covered.js
+
+# Databases
+*_db.json
 
 # Created by https://www.gitignore.io/api/node,linux,macos,windows,visualstudiocode
 
@@ -134,5 +142,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/node,linux,macos,windows,visualstudiocode
-
-*_db.json
