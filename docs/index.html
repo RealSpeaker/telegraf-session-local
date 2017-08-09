@@ -50,32 +50,32 @@
 <h1><a href="https://github.com/telegraf/telegraf">Telegraf</a> local sessions middleware</h1><p>Multiple types of storage supported: <code>Memory</code>, <code>fileSync</code>, <code>fileAsync</code>, ...</p>
 <p>Multiple file formats supported: <code>JSON</code>, <code>BSON</code>, <code>YAML</code>, <code>XML</code>, ...</p>
 <h2>🚀 Installation</h2><pre class="prettyprint source lang-js"><code>$ npm install telegraf-session-local -S</code></pre><h3><a href="http://realspeaker.github.io/telegraf-session-local/">Documentation &amp; reference</a></h3><h2>👀 Quick-start example</h2><pre class="prettyprint source lang-js"><code>const
-    Telegraf = require('telegraf'),
-    LocalSession = require('../lib/session')
+  Telegraf = require('telegraf'),
+  LocalSession = require('../lib/session')
 
 const Bot = new Telegraf(process.env.BOT_TOKEN)
 
 Bot.use((new LocalSession({ database: 'example_db.json' })).middleware())
 
 Bot.on('text', (ctx, next) => {
-    ctx.session.counter = ctx.session.counter || 0
-    ctx.session.counter++
-    return next()
+  ctx.session.counter = ctx.session.counter || 0
+  ctx.session.counter++
+  return next()
 })
 
 Bot.command('/stats', (ctx) => {
-    ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username}`)
+  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username}`)
 })
 
 Bot.command('/remove', (ctx) => {
-    ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.session)}\``)
-    // Setting session to null, undefined or empty object/array will trigger removing it from database
-    ctx.session = null
+  ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.session)}\``)
+  // Setting session to null, undefined or empty object/array will trigger removing it from database
+  ctx.session = null
 })
 
 Bot.startPolling()</code></pre><h2>💡 Full example</h2><pre class="prettyprint source lang-js"><code>const
-    Telegraf = require('telegraf'),
-    LocalSession = require('../lib/session')
+  Telegraf = require('telegraf'),
+  LocalSession = require('../lib/session')
 
 const Bot = new Telegraf(process.env.BOT_TOKEN)
 
@@ -83,48 +83,48 @@ const Bot = new Telegraf(process.env.BOT_TOKEN)
 const property = 'data'
 
 const localSession = new LocalSession({
-    // Database name/path, where sessions will be located (default: 'sessions.json')
-    database: 'example_db.json',
-    // Name of session property object in Telegraf Context (default: 'session')
-    property: 'session',
-    // Type of lowdb storage (default: 'storagefileAsync')
-    storage: LocalSession.storagefileAsync,
-    // Format of storage/database (default: JSON.stringify / JSON.parse)
-    format: {
-        serialize: (obj) => JSON.stringify(obj, null, 2), // null & 2 for pretty-formatted JSON
-        deserialize: (str) => JSON.parse(str),
-    },
-    // We will use `messages` array in our database to store user messages using exported lowdb instance from LocalSession via Telegraf Context
-    state: { messages: [] }
+  // Database name/path, where sessions will be located (default: 'sessions.json')
+  database: 'example_db.json',
+  // Name of session property object in Telegraf Context (default: 'session')
+  property: 'session',
+  // Type of lowdb storage (default: 'storagefileAsync')
+  storage: LocalSession.storagefileAsync,
+  // Format of storage/database (default: JSON.stringify / JSON.parse)
+  format: {
+    serialize: (obj) => JSON.stringify(obj, null, 2), // null & 2 for pretty-formatted JSON
+    deserialize: (str) => JSON.parse(str),
+  },
+  // We will use `messages` array in our database to store user messages using exported lowdb instance from LocalSession via Telegraf Context
+  state: { messages: [] }
 })
 
 // Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` name
 Bot.use(localSession.middleware(property))
 
 Bot.on('text', (ctx, next) => {
-    ctx[property].counter = ctx[property].counter || 0
-    ctx[property].counter++
-    // Writing message to Array `messages` into database which already has sessions Array
-    ctx[property + 'DB'].get('messages').push([ctx.message]).write()
-    // `property`+'DB' is a name of property which contains lowdb instance (`dataDB`)
+  ctx[property].counter = ctx[property].counter || 0
+  ctx[property].counter++
+  // Writing message to Array `messages` into database which already has sessions Array
+  ctx[property + 'DB'].get('messages').push([ctx.message]).write()
+  // `property`+'DB' is a name of property which contains lowdb instance (`dataDB`)
 
-    return next()
+  return next()
 })
 
 Bot.command('/stats', (ctx) => {
-    let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
-         msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username}`
-    ctx.replyWithMarkdown(msg)
+  let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
+     msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username}`
+  ctx.replyWithMarkdown(msg)
 })
 Bot.command('/remove', (ctx) => {
-    ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
-    // Setting session to null, undefined or empty object/array will trigger removing it from database
-    ctx[property] = null
+  ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
+  // Setting session to null, undefined or empty object/array will trigger removing it from database
+  ctx[property] = null
 })
 
 Bot.startPolling()</code></pre><h4>Another examples located in <code>/examples</code> folder</h4><p>Also, you may read comments in  <code>/lib/session.js</code></p>
 <h2>🎓 Licence &amp; copyright</h2><hr>
-<p>&copy; 2017 Tema Smirnov <a href="&#109;&#x61;&#105;&#108;&#116;&#x6f;&#58;&#103;&#x69;&#116;&#104;&#x75;&#x62;&#x2e;&#116;&#x65;&#109;&#97;&#64;&#x73;&#109;&#105;&#114;&#x6e;&#x6f;&#118;&#46;&#x6f;&#x6e;&#101;">&#103;&#x69;&#116;&#104;&#x75;&#x62;&#x2e;&#116;&#x65;&#109;&#97;&#64;&#x73;&#109;&#105;&#114;&#x6e;&#x6f;&#118;&#46;&#x6f;&#x6e;&#101;</a> <a href="https://t.me/TemaSM"><img src="https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg" alt="Telegram"></a></p>
+<p>&copy; 2017 Tema Smirnov <a href="&#x6d;&#x61;&#x69;&#108;&#116;&#x6f;&#x3a;&#x67;&#105;&#116;&#x68;&#117;&#98;&#46;&#x74;&#x65;&#x6d;&#x61;&#x40;&#115;&#109;&#105;&#x72;&#x6e;&#x6f;&#118;&#46;&#111;&#x6e;&#101;">&#x67;&#105;&#116;&#x68;&#117;&#98;&#46;&#x74;&#x65;&#x6d;&#x61;&#x40;&#115;&#109;&#105;&#x72;&#x6e;&#x6f;&#118;&#46;&#111;&#x6e;&#101;</a> <a href="https://t.me/TemaSM"><img src="https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg" alt="Telegram"></a></p>
 <p>MIT - <a href="https://github.com/RealSpeaker">RealSpeaker Group Ltd.</a></p></article>
     </section>
 

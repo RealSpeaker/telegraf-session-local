@@ -1,6 +1,6 @@
 {
   "name": "telegraf-session-local",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Telegraf local sessions middleware with multiple supported storage types (memory/fileSync/fileAsync/...) using lowdb",
   "main": "lib/session.js",
   "repository": {
