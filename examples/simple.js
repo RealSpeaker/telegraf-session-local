@@ -1,6 +1,6 @@
 const
   Telegraf = require('telegraf'),
-  LocalSession = require('../lib/session')
+  LocalSession = require('../lib/session') // require('telegraf-session-local')
 
 const Bot = new Telegraf(process.env.BOT_TOKEN)
 

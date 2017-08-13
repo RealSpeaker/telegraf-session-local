@@ -4,71 +4,37 @@ const
   LocalSession = require('../lib/session'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
-  options = { database: 'test_db.json' }
+  options = { storage: LocalSession.storageMemory }
 
-describe('Telegraf Local Session', function () {
-  it('should retrieve and save session', function (done) {
-    const localSession = new LocalSession(options)
-    const key = '1:1' // ChatID:FromID
-    let session = localSession.getSession(key)
-    debug('getSession %O', session)
-    should.exist(session)
-    session.foo = 42
-    localSession.saveSession(key, session).then(sess => {
-      debug('Saved session %O', sess)
-      should.exist(sess)
-      sess.data.should.be.deepEqual({ foo: 42 })
-      done()
-    })
-  })
+describe('Telegraf Session local : General', () => {
+  let bot = {}
+  let localSession = new LocalSession(options)
 
-  it('should be defined', function (done) {
-    const bot = new Telegraf()
-    const localSession = new LocalSession(options)
+  it('Should have access to lowdb instance via ctx.sessionDB', (done) => {
+    bot = new Telegraf()
     bot.on('text', localSession.middleware(), (ctx) => {
-      debug('Middleware session %O', ctx.session)
-      should.exist(ctx.session)
-      ctx.session.foo = 42
-      debug('Updated Middleware session %O', ctx.session)
+      debug('lowdb instance via `ctx.sessionDB` %o', ctx.sessionDB)
+      should.exist(ctx.sessionDB)
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
   })
 
-  it('should handle existing session', function (done) {
-    const bot = new Telegraf()
-    const localSession = new LocalSession(options)
-    bot.on('text', localSession.middleware(), (ctx) => {
-      debug('Existing Middleware session %O', ctx.session)
-      should.exist(ctx.session)
-      ctx.session.should.have.property('foo')
-      ctx.session.foo.should.be.equal(42)
+  it('Should override default `session` property to `data` at middleware() call', (done) => {
+    bot = new Telegraf()
+    bot.on('text', localSession.middleware('data'), (ctx) => {
+      debug('Overrided session property %o', ctx.data)
+      should.exist(ctx.data)
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
   })
 
-  it('should handle not existing session', function (done) {
-    const bot = new Telegraf()
-    const localSession = new LocalSession(options)
-    bot.on('text', localSession.middleware(), (ctx) => {
-      debug('Not Existing Middleware session %O', ctx.session)
-      should.exist(ctx.session)
-      ctx.session.should.not.have.property('foo')
-      done()
-    })
-    bot.handleUpdate({ message: { chat: { id: 1337 }, from: { id: 1337 }, text: 'hey' } })
-  })
-
-  it('should handle session reset', function (done) {
-    const bot = new Telegraf()
-    const localSession = new LocalSession(options)
-    bot.on('text', localSession.middleware(), (ctx) => {
-      debug('Middleware session reset - before %O', ctx.session)
-      ctx.session = null
-      should.exist(ctx.session)
-      ctx.session.should.not.have.property('foo')
-      debug('Middleware session reset - after %O', ctx.session)
+  it('Should have access to lowdb instance via overrided property in ctx', (done) => {
+    bot = new Telegraf()
+    bot.on('text', localSession.middleware('data'), (ctx) => {
+      debug('lowdb instance via `ctx.dataDB` %o', ctx.dataDB)
+      should.exist(ctx.dataDB)
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
