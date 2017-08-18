@@ -22,6 +22,9 @@
   ],
   "author": "Tema Smirnov <npm.tema@smirnov.one>",
   "license": "MIT",
+  "contributors": [
+    "Edgar Toll <edjopato@gmail.com> (https://edjopato.de/)"
+  ],
   "bugs": {
     "url": "https://github.com/realspeaker/telegraf-session-local/issues"
   },
