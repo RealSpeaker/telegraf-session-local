@@ -42,7 +42,7 @@ describe('Telegraf Session local : Session Key Update Types', () => {
       sessionKey.should.be.equal('2:1')
       done()
     })
-    bot.handleUpdate({ callback_query: { from: { id: 1 }, message: { from: { id: 1 }, chat: { id: 2 }, text: 'hey' }, chat_instance: '-123', data: 'c:b' } })
+    bot.handleUpdate({ callback_query: { from: { id: 1 }, message: { from: { id: 3 }, chat: { id: 2 }, text: 'hey' }, chat_instance: '-123', data: 'c:b' } })
   })
 
   it('Should handle callback_query from inline_query message', (done) => {
