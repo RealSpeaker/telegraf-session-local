@@ -64,7 +64,7 @@
   "dependencies": {
     "debug": "^3.0.0",
     "lodash-id": "^0.14.0",
-    "lowdb": "^0.16.2"
+    "lowdb": "^0.17.0"
   },
   "peerDependencies": {
     "telegraf": "^2.0.0 || ^3.0.0"
