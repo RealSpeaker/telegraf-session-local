@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LocalSession.html">LocalSession</a><ul class='methods'><li data-type='method'><a href="LocalSession.html#getSessionKey">getSessionKey</a></li><li data-type='method'><a href="LocalSession.html#getSession">getSession</a></li><li data-type='method'><a href="LocalSession.html#saveSession">saveSession</a></li><li data-type='method'><a href="LocalSession.html#middleware">middleware</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-telegraf-session-local.html">telegraf-session-local</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LocalSession.storagefileSync">LocalSession.storagefileSync</a></li><li><a href="global.html#LocalSession.storagefileAsync">LocalSession.storagefileAsync</a></li><li><a href="global.html#LocalSession.storageMemory">LocalSession.storageMemory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LocalSession.html">LocalSession</a><ul class='methods'><li data-type='method'><a href="LocalSession.html#getSessionKey">getSessionKey</a></li><li data-type='method'><a href="LocalSession.html#getSession">getSession</a></li><li data-type='method'><a href="LocalSession.html#saveSession">saveSession</a></li><li data-type='method'><a href="LocalSession.html#middleware">middleware</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-telegraf-session-local.html">telegraf-session-local</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LocalSession.storagefileSync">LocalSession.storagefileSync</a></li><li><a href="global.html#LocalSession.storageFileSync">LocalSession.storageFileSync</a></li><li><a href="global.html#LocalSession.storagefileAsync">LocalSession.storagefileAsync</a></li><li><a href="global.html#LocalSession.storageFileAsync">LocalSession.storageFileAsync</a></li><li><a href="global.html#LocalSession.storageMemory">LocalSession.storageMemory</a></li><li><a href="global.html#LocalSession.storageBase">LocalSession.storageBase</a></li></ul>
 </nav>
 
 <div id="main">
@@ -40,19 +40,19 @@
             <pre class="prettyprint source linenums"><code>const
   debug = require('debug')('telegraf:session-local'),
   lowdb = require('lowdb'),
-  storagefileSync = require('lowdb/lib/storages/file-sync'),
-  storagefileAsync = require('lowdb/lib/storages/file-async'),
-  storageMemory = require('lowdb/lib/storages/memory')
+  storageFileSync = require('lowdb/adapters/FileSync'),
+  storageFileAsync = require('lowdb/adapters/FileAsync'),
+  storageMemory = require('lowdb/adapters/Memory')
 
 /**
  * Represents a wrapper around locally stored session, it's {@link LocalSession#middleware|middleware} &amp; lowdb
  *
  * @param {Object} [options] - Options for {@link LocalSession|LocalSession} &amp; {@link https://github.com/typicode/lowdb|lowdb}
  * @param {String} [options.database] - Name or path to database file `(default: 'sessions.json')`
- * @param {String} [options.property] - Name of property in {@link http://telegraf.js.org/context.html|Telegraf Context} where session object will be located `(default: 'session')`
+ * @param {String} [options.property] - Name of property in {@link https://telegraf.js.org/#/?id=context|Telegraf Context} where session object will be located `(default: 'session')`
  * @param {Object} [options.state] - Initial state of database. You can use it to pre-init database Arrays/Objects to store your own data `(default: {})`
- * @param {Function} [options.getSessionKey] - Function to get identifier for session from {@link http://telegraf.js.org/context.html|Telegraf Context} (may implement it on your own)
- * @param {Object} [options.storage] - lowdb storage option for implementing your own storage read/write operations `(default: {@link https://git.io/v76r9|storagefileAsync})`
+ * @param {Function} [options.getSessionKey] - Function to get identifier for session from {@link https://telegraf.js.org/#/?id=context|Telegraf Context} (may implement it on your own)
+ * @param {Object} [options.storage] - lowdb storage option for implementing your own storage read/write operations `(default: {@link LocalSession.storageFileAsync|LocalSession.storageFileAsync})`
  * @param {Function} [options.storage.read] - lowdb storage read function, must return an object or a Promise
  * @param {Function} [options.storage.write] - lowdb storage write function, must return undefined or a Promise
  * @param {Object} [options.format] - lowdb storage format option for implementing your own database format for read/write operations
@@ -63,10 +63,11 @@
 class LocalSession {
   constructor (options = {}) {
     this.options = Object.assign({
-      storage: LocalSession.storagefileAsync,
+      storage: LocalSession.storageFileAsync,
       database: 'sessions.json',
       property: 'session',
       state: { },
+      format: { },
       getSessionKey: (ctx) => {
         if (!ctx.from) return // should never happen
 
@@ -81,23 +82,51 @@ class LocalSession {
         return chatInstance + ':' + ctx.from.id
       }
     }, options)
+    this.DB = undefined
+    this._adapter = undefined
+    // DISABLED: this.options.defaultValue = this.options.state // Backward compatability with old lowdb
+    let defaultAdaptersOptions = Object.assign(
+      { defaultValue: this.options.state },
+      this.options.format.serialize ? { serialize: this.options.format.serialize } : {},
+      this.options.format.deserialize ? { deserialize: this.options.format.deserialize } : {}
+    )
     if (this.options.storage === LocalSession.storageMemory) {
-      debug('Init lowdb with storageMemory')
-      this.DB = lowdb()
+      debug('Initiating: lowdb adapter: storageMemory')
+      this._adapter = new LocalSession.storageMemory(this.options.database, defaultAdaptersOptions)
+      // TODO: Remove back-compat conditional in next version due to deprecation storagefileAsync
+    } else if (this.options.storage === LocalSession.storageFileAsync || this.options.storage === LocalSession.storagefileAsync) {
+      debug('Initiating: lowdb adapter: storageFileAsync')
+      this._adapter = new LocalSession.storageFileAsync(this.options.database, defaultAdaptersOptions)
+      // TODO: Remove back-compat conditional in next version due to deprecation of storagefileSync
+    } else if (this.options.storage === LocalSession.storageFileSync || this.options.storage === LocalSession.storagefileSync) {
+      debug('Initiating: lowdb adapter: storageFileSync')
+      this._adapter = new LocalSession.storageFileSync(this.options.database, defaultAdaptersOptions)
     } else {
-      debug('Init lowdb')
-      this.DB = lowdb(this.options.database, this.options)
+      debug('Initiating: lowdb adapter: custom storage/adapter')
+      this._adapter = new this.options.storage(this.options.database, defaultAdaptersOptions)
     }
-    // Use ID based resources, so we can query records by ID (ex.: getById(), removeById(), ...)
-    this.DB._.mixin(require('lodash-id'))
-    // If database is empty, fill it with empty Array of sessions
-    this.DB.defaults(Object.assign({ sessions: [] }, this.options.state)).write()
+    debug('Initiating: lowdb instance')
+    let DbInstance = lowdb(this._adapter)
+    // If lowdb initiated with async (Promise) adapter
+    if (isPromise(DbInstance)) {
+      debug('DbInstance is Promise like')
+      // TODO: Split it from constructor, because this code will produce glitches if async initiating may take too long time
+      DbInstance.then((DB) => {
+        this.DB = DB
+        _initDB.call(this)
+      })
+    }
+    // If lowdb initiated with sync adapter
+    else {
+      this.DB = DbInstance
+      _initDB.call(this)
+    }
   }
 
   /**
-   * Get session key from {@link http://telegraf.js.org/context.html|Telegraf Context}
+   * Get session key from {@link https://telegraf.js.org/#/?id=context|Telegraf Context}
    *
-   * @param {Object} ctx - {@link http://telegraf.js.org/context.html|Telegraf Context}
+   * @param {Object} ctx - {@link https://telegraf.js.org/#/?id=context|Telegraf Context}
    * @returns {String} Session key in format `number:number` (chat.id:from.id)
    */
   getSessionKey (ctx) {
@@ -113,12 +142,7 @@ class LocalSession {
    */
   getSession (key) {
     this._called(arguments)
-    let session
-    try {
-      session = this.DB.get('sessions').getById(key).value() || {}
-    } catch (error) {
-      debug('Session state failed', error)
-    }
+    let session = this.DB.get('sessions').getById(key).value() || {}
     debug('Session state', session)
     return session.data || {}
   }
@@ -145,7 +169,7 @@ class LocalSession {
       debug(' -> Updating')
       let session = this.DB.get('sessions').updateById(key, { data: data }).write()
       // Check if lowdb Storage returned var type is Promise-like or just sync-driven data
-      if (typeof session.then === 'function') {
+      if (isPromise(session)) {
         return session.then(sess => { return sess })
       } else {
         // For better use of saveSession(), even with sync storage types
@@ -157,7 +181,7 @@ class LocalSession {
       debug(' -> Inserting')
       let session = this.DB.get('sessions').push({ id: key, data: data }).write()
       // Check if lowdb Storage returned var type is Promise-like or just sync-driven data
-      if (typeof session.then === 'function') {
+      if (isPromise(session)) {
         return session.then(_session => { return _session[0] })
       } else {
         // For better use of saveSession(), even with sync storage types
@@ -170,23 +194,22 @@ class LocalSession {
   /**
    * Session middleware for use in Telegraf
    *
-   * @param {String} [property] - Name of property in {@link http://telegraf.js.org/context.html|Telegraf Context} where session object will be located (overrides `property` at {@link LocalSession} constructor)
+   * @param {String} [property] - Name of property in {@link https://telegraf.js.org/#/?id=context|Telegraf Context} where session object will be located (overrides `property` at {@link LocalSession} constructor)
    * @returns {Promise}
    */
   middleware (property = this.options.property) {
-    this._called(arguments)
+    let that = this
     return (ctx, next) => {
-      const key = this.getSessionKey(ctx)
+      const key = that.getSessionKey(ctx)
       if (!key) return next()
       debug('Session key: %s', key)
-      let session = this.getSession(key)
+      let session = that.getSession(key)
       debug('Session data: %o', session)
       // Assigning session object to the Telegraf Context using `property` as a variable name
       Object.defineProperty(ctx, property, {
         get: function () { return session },
         set: function (newValue) { session = Object.assign({}, newValue) }
       })
-      let that = this
       // Make lowdb available in the Telegraf Context
       Object.defineProperty(ctx, `${property}DB`, {
         get: function () { return that.DB },
@@ -196,37 +219,66 @@ class LocalSession {
       return next().then(() => {
         this._called(arguments)
         debug('Next Middleware -> Key: %s | Session: %o', key, session)
-        return this.saveSession(key, session)
+        return that.saveSession(key, session)
       })
     }
   }
 
   /**
-   * lowdb storage named `{@link https://git.io/v769g|fileSync}`
+   * lowdb storage named `{@link https://git.io/vhM3Y|fileSync}` before `{@link https://git.io/vhM3Z|lowdb@0.17.0}`
    *
    * @memberof! LocalSession
    * @name LocalSession.storagefileSync
+   * @deprecated since version 0.0.5 renamed to {@link LocalSession.storageFileSync|LocalSession.storageFileSync}
    * @global
    * @readonly
    */
   static get storagefileSync () {
-    return storagefileSync
+    console.warn('> DeprWarn: LocalSession.storagefileSync renamed to storageFileSync')
+    return storageFileSync
   }
 
   /**
-   * lowdb storage named `{@link https://git.io/v76r9|fileAsync}`
+   * lowdb storage/adapter named `{@link https://git.io/vhMqc|FileSync}`
+   *
+   * @memberof! LocalSession
+   * @name LocalSession.storageFileSync
+   * @global
+   * @readonly
+   */
+  static get storageFileSync () {
+    return storageFileSync
+  }
+
+  /**
+   * lowdb storage named `{@link https://git.io/vhM3m|fileAsync}` before `{@link https://git.io/vhM3Z|lowdb@0.17.0}`
    *
    * @memberof! LocalSession
    * @name LocalSession.storagefileAsync
+   * @deprecated since version 0.0.5 renamed to {@link LocalSession.storageFileAsync|LocalSession.storageFileAsync}
+   * @deprecated since version 0.0.5
    * @global
    * @readonly
    */
   static get storagefileAsync () {
-    return storagefileAsync
+    console.warn('> DeprWarn: LocalSession.storagefileAsync renamed to storageFileAsync')
+    return storageFileAsync
   }
 
   /**
-   * lowdb storage named `{@link https://git.io/v769o|memory}`
+   * lowdb storage/adapter named `{@link https://git.io/vhMqm|FileAsync}`
+   *
+   * @memberof! LocalSession
+   * @name LocalSession.storageFileAsync
+   * @global
+   * @readonly
+   */
+  static get storageFileAsync () {
+    return storageFileAsync
+  }
+
+  /**
+   * lowdb storage/adapter named `{@link https://git.io/vhMqs|Memory}`
    *
    * @memberof! LocalSession
    * @name LocalSession.storageMemory
@@ -235,6 +287,18 @@ class LocalSession {
    */
   static get storageMemory () {
     return storageMemory
+  }
+
+  /**
+   * lowdb `{@link https://git.io/vhMOK|storage/adapter base}` constructor (to extend it in your custom storage/adapter)
+   *
+   * @memberof! LocalSession
+   * @name LocalSession.storageBase
+   * @global
+   * @readonly
+   */
+  static get storageBase () {
+    return require('lowdb/adapters/Base')
   }
 
   /**
@@ -248,10 +312,23 @@ class LocalSession {
   }
 }
 
+function _initDB () {
+  // Use ID based resources, so we can query records by ID (ex.: getById(), removeById(), ...)
+  this.DB._.mixin(require('lodash-id'))
+  // If database is empty, fill it with empty Array of sessions and optionally with initial state
+  this.DB.defaults(Object.assign({ sessions: [] }, this.options.state)).write()
+  debug('Initiating finished')
+}
+
+// Credits to `is-promise` package
+function isPromise (obj) {
+  return !!obj &amp;&amp; (typeof obj === 'object' || typeof obj === 'function') &amp;&amp; typeof obj.then === 'function'
+}
+
 /**
  * @overview {@link http://telegraf.js.org/|Telegraf} Session middleware for storing sessions locally (memory/fileSync/fileAsync/...)
  * @module telegraf-session-local
- * @version 0.0.4
+ * @version 0.0.5
  * @license MIT
  * @author Tema Smirnov &lt;git.tema@smirnov.one>
  * @requires {@link https://www.npmjs.com/package/telegraf|npm: telegraf}
@@ -272,7 +349,7 @@ module.exports = LocalSession
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

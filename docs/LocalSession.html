@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LocalSession.html">LocalSession</a><ul class='methods'><li data-type='method'><a href="LocalSession.html#getSessionKey">getSessionKey</a></li><li data-type='method'><a href="LocalSession.html#getSession">getSession</a></li><li data-type='method'><a href="LocalSession.html#saveSession">saveSession</a></li><li data-type='method'><a href="LocalSession.html#middleware">middleware</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-telegraf-session-local.html">telegraf-session-local</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LocalSession.storagefileSync">LocalSession.storagefileSync</a></li><li><a href="global.html#LocalSession.storagefileAsync">LocalSession.storagefileAsync</a></li><li><a href="global.html#LocalSession.storageMemory">LocalSession.storageMemory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LocalSession.html">LocalSession</a><ul class='methods'><li data-type='method'><a href="LocalSession.html#getSessionKey">getSessionKey</a></li><li data-type='method'><a href="LocalSession.html#getSession">getSession</a></li><li data-type='method'><a href="LocalSession.html#saveSession">saveSession</a></li><li data-type='method'><a href="LocalSession.html#middleware">middleware</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-telegraf-session-local.html">telegraf-session-local</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LocalSession.storagefileSync">LocalSession.storagefileSync</a></li><li><a href="global.html#LocalSession.storageFileSync">LocalSession.storageFileSync</a></li><li><a href="global.html#LocalSession.storagefileAsync">LocalSession.storagefileAsync</a></li><li><a href="global.html#LocalSession.storageFileAsync">LocalSession.storageFileAsync</a></li><li><a href="global.html#LocalSession.storageMemory">LocalSession.storageMemory</a></li><li><a href="global.html#LocalSession.storageBase">LocalSession.storageBase</a></li></ul>
 </nav>
 
 <div id="main">
@@ -258,7 +258,7 @@
 
             
 
-            <td class="description last"><p>Name of property in <a href="http://telegraf.js.org/context.html">Telegraf Context</a> where session object will be located <code>(default: 'session')</code></p></td>
+            <td class="description last"><p>Name of property in <a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a> where session object will be located <code>(default: 'session')</code></p></td>
         </tr>
 
     
@@ -324,7 +324,7 @@
 
             
 
-            <td class="description last"><p>Function to get identifier for session from <a href="http://telegraf.js.org/context.html">Telegraf Context</a> (may implement it on your own)</p></td>
+            <td class="description last"><p>Function to get identifier for session from <a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a> (may implement it on your own)</p></td>
         </tr>
 
     
@@ -357,7 +357,7 @@
 
             
 
-            <td class="description last"><p>lowdb storage option for implementing your own storage read/write operations <code>(default: <a href="https://git.io/v76r9">storagefileAsync</a>)</code></p>
+            <td class="description last"><p>lowdb storage option for implementing your own storage read/write operations <code>(default: <a href="global.html#LocalSession.storageFileAsync"><code>LocalSession.storageFileAsync</code></a>)</code></p>
                 <h6>Properties</h6>
                 
 
@@ -652,7 +652,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session.js.html">session.js</a>, <a href="session.js.html#line64">line 64</a>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line93">line 93</a>
     </li></ul></dd>
     
 
@@ -692,7 +692,7 @@
 
 
 <div class="description">
-    <p>Get session key from <a href="http://telegraf.js.org/context.html">Telegraf Context</a></p>
+    <p>Get session key from <a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a></p>
 </div>
 
 
@@ -746,7 +746,7 @@
 
             
 
-            <td class="description last"><p><a href="http://telegraf.js.org/context.html">Telegraf Context</a></p></td>
+            <td class="description last"><p><a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a></p></td>
         </tr>
 
     
@@ -807,7 +807,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session.js.html">session.js</a>, <a href="session.js.html#line75">line 75</a>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line104">line 104</a>
     </li></ul></dd>
     
 
@@ -962,7 +962,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session.js.html">session.js</a>, <a href="session.js.html#line94">line 94</a>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line118">line 118</a>
     </li></ul></dd>
     
 
@@ -1145,7 +1145,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session.js.html">session.js</a>, <a href="session.js.html#line137">line 137</a>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line161">line 161</a>
     </li></ul></dd>
     
 
@@ -1251,7 +1251,7 @@
 
             
 
-            <td class="description last"><p>Name of property in <a href="http://telegraf.js.org/context.html">Telegraf Context</a> where session object will be located (overrides <code>property</code> at <a href="LocalSession.html"><code>LocalSession</code></a> constructor)</p></td>
+            <td class="description last"><p>Name of property in <a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a> where session object will be located (overrides <code>property</code> at <a href="LocalSession.html"><code>LocalSession</code></a> constructor)</p></td>
         </tr>
 
     
@@ -1309,7 +1309,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

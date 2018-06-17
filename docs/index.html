@@ -22,7 +22,7 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LocalSession.html">LocalSession</a><ul class='methods'><li data-type='method'><a href="LocalSession.html#getSessionKey">getSessionKey</a></li><li data-type='method'><a href="LocalSession.html#getSession">getSession</a></li><li data-type='method'><a href="LocalSession.html#saveSession">saveSession</a></li><li data-type='method'><a href="LocalSession.html#middleware">middleware</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-telegraf-session-local.html">telegraf-session-local</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LocalSession.storagefileSync">LocalSession.storagefileSync</a></li><li><a href="global.html#LocalSession.storagefileAsync">LocalSession.storagefileAsync</a></li><li><a href="global.html#LocalSession.storageMemory">LocalSession.storageMemory</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LocalSession.html">LocalSession</a><ul class='methods'><li data-type='method'><a href="LocalSession.html#getSessionKey">getSessionKey</a></li><li data-type='method'><a href="LocalSession.html#getSession">getSession</a></li><li data-type='method'><a href="LocalSession.html#saveSession">saveSession</a></li><li data-type='method'><a href="LocalSession.html#middleware">middleware</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-telegraf-session-local.html">telegraf-session-local</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LocalSession.storagefileSync">LocalSession.storagefileSync</a></li><li><a href="global.html#LocalSession.storageFileSync">LocalSession.storageFileSync</a></li><li><a href="global.html#LocalSession.storagefileAsync">LocalSession.storagefileAsync</a></li><li><a href="global.html#LocalSession.storageFileAsync">LocalSession.storageFileAsync</a></li><li><a href="global.html#LocalSession.storageMemory">LocalSession.storageMemory</a></li><li><a href="global.html#LocalSession.storageBase">LocalSession.storageBase</a></li></ul>
 </nav>
 
 <div id="main">
@@ -46,25 +46,35 @@
 
 
     <section class="readme">
-        <article><p><a href="https://www.npmjs.com/package/telegraf-session-local"><img src="https://img.shields.io/npm/v/telegraf-session-local.svg?style=flat-square" alt="NPM Version"></a><br><a href="https://www.npmjs.com/package/telegraf-session-local"><img src="https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square" alt="node"></a><br><a href="https://travis-ci.org/RealSpeaker/telegraf-session-local"><img src="https://travis-ci.org/RealSpeaker/telegraf-session-local.svg?branch=master" alt="Build Status"></a><br><a href="https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master"><img src="https://coveralls.io/repos/github/RealSpeaker/telegraf-session-local/badge.svg?branch=master" alt="Coverage Status"></a><br><a href="https://david-dm.org/realspeaker/telegraf-session-local"><img src="https://david-dm.org/realspeaker/telegraf-session-local.svg" alt="Dependency Status"></a><br><a href="http://standardjs.com/"><img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square" alt="js-standard-style"></a><br><a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg" alt="Greenkeeper badge"></a></p>
-<h1><a href="https://github.com/telegraf/telegraf">Telegraf</a> local sessions middleware</h1><p>Multiple types of storage supported: <code>Memory</code>, <code>fileSync</code>, <code>fileAsync</code>, ...</p>
-<p>Multiple file formats supported: <code>JSON</code>, <code>BSON</code>, <code>YAML</code>, <code>XML</code>, ...</p>
+        <article><h1><a href="https://github.com/telegraf/telegraf">Telegraf</a> Session local</h1><p><a href="https://www.npmjs.com/package/telegraf-session-local"><img src="https://img.shields.io/npm/v/telegraf-session-local.svg?style=flat-square" alt="NPM Version"></a><br><a href="https://www.npmjs.com/package/telegraf-session-local"><img src="https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square" alt="node"></a><br><a href="https://travis-ci.org/RealSpeaker/telegraf-session-local"><img src="https://travis-ci.org/RealSpeaker/telegraf-session-local.svg?branch=master" alt="Build Status"></a><br><a href="https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master"><img src="https://coveralls.io/repos/github/RealSpeaker/telegraf-session-local/badge.svg?branch=master" alt="Coverage Status"></a><br><a href="https://david-dm.org/realspeaker/telegraf-session-local"><img src="https://david-dm.org/realspeaker/telegraf-session-local.svg" alt="Dependency Status"></a><br><a href="http://standardjs.com/"><img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square" alt="js-standard-style"></a><br><a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg" alt="Greenkeeper badge"></a></p>
+<blockquote>
+<p>Middleware for locally stored sessions &amp; database</p>
+</blockquote>
+<h3>⚡️ Features</h3><ul>
+<li>Any type of storage: <code>Memory</code>, <code>FileSync</code>, <code>FileAsync</code>, ... (implement your own)</li>
+<li>Any format you want: <code>JSON</code>, <code>BSON</code>, <code>YAML</code>, <code>XML</code>, ... (implement your own)</li>
+<li>Shipped together with power of <code>lodash</code></li>
+<li><p>Supports basic DB-like operations (thanks to <code>lodash-id</code>):</p>
+<p><code>getById</code>, <code>insert</code>, <code>upsert</code>, <code>updateById</code>, <code>updateWhere</code>, <code>replaceById</code>, <code>removeById</code>, <code>removeWhere</code>, <code>createId</code>,</p>
+</li>
+</ul>
 <h2>🚀 Installation</h2><pre class="prettyprint source lang-js"><code>$ npm install telegraf-session-local -S</code></pre><h3><a href="http://realspeaker.github.io/telegraf-session-local/">Documentation &amp; reference</a></h3><h2>👀 Quick-start example</h2><pre class="prettyprint source lang-js"><code>const
   Telegraf = require('telegraf'),
   LocalSession = require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN)
+const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
 Bot.use((new LocalSession({ database: 'example_db.json' })).middleware())
 
 Bot.on('text', (ctx, next) => {
   ctx.session.counter = ctx.session.counter || 0
   ctx.session.counter++
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   return next()
 })
 
 Bot.command('/stats', (ctx) => {
-  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username}`)
+  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username || ctx.from.id}`)
 })
 
 Bot.command('/remove', (ctx) => {
@@ -77,7 +87,7 @@ Bot.startPolling()</code></pre><h2>💡 Full example</h2><pre class="prettyprint
   Telegraf = require('telegraf'),
   LocalSession = require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN)
+const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
 // Name of session property object in Telegraf Context (default: 'session')
 const property = 'data'
@@ -104,16 +114,18 @@ Bot.use(localSession.middleware(property))
 Bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   // Writing message to Array `messages` into database which already has sessions Array
   ctx[property + 'DB'].get('messages').push([ctx.message]).write()
-  // `property`+'DB' is a name of property which contains lowdb instance (`dataDB`)
+  // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`
+  // ctx.dataDB.get('messages').push([ctx.message]).write()
 
   return next()
 })
 
 Bot.command('/stats', (ctx) => {
   let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
-     msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username}`
+  msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username || ctx.from.id}`
   ctx.replyWithMarkdown(msg)
 })
 Bot.command('/remove', (ctx) => {
@@ -122,8 +134,8 @@ Bot.command('/remove', (ctx) => {
   ctx[property] = null
 })
 
-Bot.startPolling()</code></pre><h4>Another examples located in <code>/examples</code> folder</h4><p>Also, you may read comments in  <code>/lib/session.js</code></p>
-<h2>🎓 Licence &amp; copyright</h2><p>&copy; 2017 Tema Smirnov / <a href="&#x6d;&#x61;&#x69;&#108;&#x74;&#111;&#x3a;&#x67;&#x69;&#116;&#104;&#x75;&#x62;&#46;&#116;&#101;&#x6d;&#97;&#x40;&#x73;&#109;&#x69;&#114;&#x6e;&#x6f;&#x76;&#46;&#111;&#110;&#101;">&#x67;&#x69;&#116;&#104;&#x75;&#x62;&#46;&#116;&#101;&#x6d;&#97;&#x40;&#x73;&#109;&#x69;&#114;&#x6e;&#x6f;&#x76;&#46;&#111;&#110;&#101;</a> / <a href="https://goo.gl/YeV4gk"><img src="https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg" alt="Telegram"></a></p>
+Bot.startPolling()</code></pre><h4>Another examples located in <code>/examples</code> folder (PRs welcome)</h4><p>Also, you may read comments in  <code>/lib/session.js</code></p>
+<h2>🎓 Licence &amp; copyright</h2><p>&copy; 2018 Tema Smirnov / <a href="mailto:&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x74;&#x65;&#109;&#x61;&#64;&#115;&#x6d;&#105;&#x72;&#110;&#x6f;&#118;&#46;&#111;&#x6e;&#x65;">&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x74;&#x65;&#109;&#x61;&#64;&#115;&#x6d;&#105;&#x72;&#110;&#x6f;&#118;&#46;&#111;&#x6e;&#x65;</a> / <a href="https://goo.gl/YeV4gk"><img src="https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg" alt="Telegram"></a></p>
 <p>MIT - <a href="https://github.com/RealSpeaker">RealSpeaker Group Ltd.</a></p></article>
     </section>
 
@@ -137,7 +149,7 @@ Bot.startPolling()</code></pre><h4>Another examples located in <code>/examples</
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.4</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
