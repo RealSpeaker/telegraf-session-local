@@ -7,7 +7,7 @@
     "name": "Example",
     "program": "${workspaceRoot}/examples/simple.js",
     "env": {
-      "BOT_TOKEN": "247056082:AAE_eLsfJtK_xwCtra7RICcti2vW4baRS9w",
+      "BOT_TOKEN": "<YOUR_BOT_TOKEN>",
       "DEBUG": "telegraf:*"
     },
     "console": "integratedTerminal"
