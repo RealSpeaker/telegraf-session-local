@@ -2,7 +2,7 @@ const
   Telegraf = require('telegraf'),
   LocalSession = require('../lib/session') // require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN)
+const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
 // Name of session property object in Telegraf Context (default: 'session')
 const property = 'data'
@@ -29,16 +29,18 @@ Bot.use(localSession.middleware(property))
 Bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   // Writing message to Array `messages` into database which already has sessions Array
   ctx[property + 'DB'].get('messages').push([ctx.message]).write()
-  // `property`+'DB' is a name of property which contains lowdb instance (`dataDB`)
+  // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`
+  // ctx.dataDB.get('messages').push([ctx.message]).write()
 
   return next()
 })
 
 Bot.command('/stats', (ctx) => {
   let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
-  msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username}`
+  msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username || ctx.from.id}`
   ctx.replyWithMarkdown(msg)
 })
 Bot.command('/remove', (ctx) => {

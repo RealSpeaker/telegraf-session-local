@@ -2,18 +2,19 @@ const
   Telegraf = require('telegraf'),
   LocalSession = require('../lib/session') // require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN)
+const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
 Bot.use((new LocalSession({ database: 'example_db.json' })).middleware())
 
 Bot.on('text', (ctx, next) => {
   ctx.session.counter = ctx.session.counter || 0
   ctx.session.counter++
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   return next()
 })
 
 Bot.command('/stats', (ctx) => {
-  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username}`)
+  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username || ctx.from.id}`)
 })
 
 Bot.command('/remove', (ctx) => {

@@ -54,8 +54,9 @@
     },
     "rules": {
       "one-var": 0,
-      "no-mixed-spaces-and-tabs": 0,
-      "comma-dangle": 0
+      "comma-dangle": 0,
+      "new-cap": 0,
+      "brace-style": ["warn", "1tbs", { "allowSingleLine": true }]
     }
   },
   "eslintIgnore": [
