@@ -4,13 +4,13 @@ const
   LocalSession = require('../lib/session'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
-  options = { database: 'test_sync_db.json', storage: LocalSession.storagefileSync }
+  options = { database: 'test_sync_db.json', storage: LocalSession.storageFileSync }
 
-describe('Telegraf Session local : storagefileSync', () => {
+describe('Telegraf Session local : storageFileSync', () => {
   let bot = {}
   let localSession = new LocalSession(options)
 
-  it('storagefileSync: Should retrieve and save session', (done) => {
+  it('storageFileSync: Should retrieve and save session', (done) => {
     const key = '1:1' // ChatID:FromID
     let session = localSession.getSession(key)
     debug('getSession %O', session)
@@ -24,7 +24,7 @@ describe('Telegraf Session local : storagefileSync', () => {
     })
   })
 
-  it('storagefileSync: Should has session', (done) => {
+  it('storageFileSync: Should has session', (done) => {
     bot = new Telegraf()
     bot.on('text', localSession.middleware(), (ctx) => {
       debug('Middleware session %O', ctx.session)
@@ -36,7 +36,7 @@ describe('Telegraf Session local : storagefileSync', () => {
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
   })
 
-  it('storagefileSync: Should handle existing session', (done) => {
+  it('storageFileSync: Should handle existing session', (done) => {
     bot = new Telegraf()
     bot.on('text', localSession.middleware(), (ctx) => {
       debug('Existing Middleware session %O', ctx.session)
@@ -48,7 +48,7 @@ describe('Telegraf Session local : storagefileSync', () => {
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
   })
 
-  it('storagefileSync: Should handle not existing session', (done) => {
+  it('storageFileSync: Should handle not existing session', (done) => {
     bot = new Telegraf()
     bot.on('text', localSession.middleware(), (ctx) => {
       debug('Not Existing Middleware session %O', ctx.session)
@@ -59,7 +59,7 @@ describe('Telegraf Session local : storagefileSync', () => {
     bot.handleUpdate({ message: { chat: { id: 1337 }, from: { id: 1337 }, text: 'hey' } })
   })
 
-  it('storagefileSync: Should handle session reset', (done) => {
+  it('storageFileSync: Should handle session reset', (done) => {
     bot = new Telegraf()
     bot.on('text', localSession.middleware(), (ctx) => {
       debug('Middleware session reset - before %O', ctx.session)
