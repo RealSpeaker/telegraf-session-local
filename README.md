@@ -1,3 +1,5 @@
+# [Telegraf](https://github.com/telegraf/telegraf) Session local
+
 [![NPM Version](https://img.shields.io/npm/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
 [![node](https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
 [![Build Status](https://travis-ci.org/RealSpeaker/telegraf-session-local.svg?branch=master)](https://travis-ci.org/RealSpeaker/telegraf-session-local)
@@ -6,12 +8,16 @@
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square)](http://standardjs.com/)
 [![Greenkeeper badge](https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg)](https://greenkeeper.io/)
 
-# [Telegraf](https://github.com/telegraf/telegraf) local sessions middleware
+> Middleware for locally stored sessions & database
 
-Multiple types of storage supported: `Memory`, `fileSync`, `fileAsync`, ...
+### ⚡️ Features
 
-Multiple file formats supported: `JSON`, `BSON`, `YAML`, `XML`, ...
+- Any type of storage: `Memory`, `FileSync`, `FileAsync`, ... (implement your own)
+- Any format you want: `JSON`, `BSON`, `YAML`, `XML`, ... (implement your own)
+- Shipped together with power of `lodash`
+- Supports basic DB-like operations (thanks to `lodash-id`):
 
+  `getById`, `insert`, `upsert`, `updateById`, `updateWhere`, `replaceById`, `removeById`, `removeWhere`, `createId`,
 
 ## 🚀 Installation
 
@@ -28,18 +34,19 @@ const
   Telegraf = require('telegraf'),
   LocalSession = require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN)
+const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
 Bot.use((new LocalSession({ database: 'example_db.json' })).middleware())
 
 Bot.on('text', (ctx, next) => {
   ctx.session.counter = ctx.session.counter || 0
   ctx.session.counter++
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   return next()
 })
 
 Bot.command('/stats', (ctx) => {
-  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username}`)
+  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username || ctx.from.id}`)
 })
 
 Bot.command('/remove', (ctx) => {
@@ -58,7 +65,7 @@ const
   Telegraf = require('telegraf'),
   LocalSession = require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN)
+const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
 // Name of session property object in Telegraf Context (default: 'session')
 const property = 'data'
@@ -85,16 +92,18 @@ Bot.use(localSession.middleware(property))
 Bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   // Writing message to Array `messages` into database which already has sessions Array
   ctx[property + 'DB'].get('messages').push([ctx.message]).write()
-  // `property`+'DB' is a name of property which contains lowdb instance (`dataDB`)
+  // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`
+  // ctx.dataDB.get('messages').push([ctx.message]).write()
 
   return next()
 })
 
 Bot.command('/stats', (ctx) => {
   let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
-     msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username}`
+  msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username || ctx.from.id}`
   ctx.replyWithMarkdown(msg)
 })
 Bot.command('/remove', (ctx) => {
@@ -106,11 +115,11 @@ Bot.command('/remove', (ctx) => {
 Bot.startPolling()
 ```
 
-#### Another examples located in `/examples` folder 
+#### Another examples located in `/examples` folder (PRs welcome)
 Also, you may read comments in  `/lib/session.js`
 
 ## 🎓 Licence &amp; copyright
 
-&copy; 2017 Tema Smirnov / <github.tema@smirnov.one> / [![Telegram](https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg)](https://goo.gl/YeV4gk)
+&copy; 2018 Tema Smirnov / <github.tema@smirnov.one> / [![Telegram](https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg)](https://goo.gl/YeV4gk)
 
 MIT - [RealSpeaker Group Ltd.](https://github.com/RealSpeaker)
