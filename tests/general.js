@@ -39,4 +39,25 @@ describe('Telegraf Session local : General', () => {
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
   })
+
+  it('Should return `undefined` when context has no `from` field', (done) => {
+    bot = new Telegraf()
+    bot.on('text', localSession.middleware(), (ctx) => {
+      debug('Telegraf context `from` field: %o', ctx.from)
+      should.not.exists(localSession.getSessionKey(ctx))
+      done()
+    })
+    bot.handleUpdate({ message: { chat: { id: 1 }, text: 'hey' } })
+  })
+
+  it('Should return `undefined` when no key provided for session to be saved', (done) => {
+    bot = new Telegraf()
+    bot.on('text', localSession.middleware(), (ctx) => {
+      let sessionKey = localSession.getSessionKey(ctx)
+      debug('Real session key calculated by LocalSession: %s', sessionKey)
+      should.not.exists(localSession.saveSession(undefined, { authenticated: false }))
+      done()
+    })
+    bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
+  })
 })
