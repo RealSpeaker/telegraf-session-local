@@ -17,7 +17,7 @@ describe('Telegraf Session local : storageFileSync', () => {
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42
-    localSession.saveSession(key, session).then(_session => {
+    localSession.saveSession(key, session).then((_session) => {
       debug('Saved session %O', _session)
       should.exist(_session)
       _session.data.should.be.deepEqual({ foo: 42 })
@@ -73,7 +73,7 @@ describe('Telegraf Session local : storageFileSync', () => {
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
   })
 
-  it('storageFileSync: Should work properly with deprecated stoarge name - storagefileSync', async (done) => {
+  it('storageFileSync: Should work properly with deprecated stoarge name - storagefileSync', (done) => {
     let _options = Object.assign({ storage: LocalSession.storagefileSync }, options)
     let _localSession = new LocalSession(_options)
     const key = '1:1' // ChatID:FromID
@@ -81,7 +81,7 @@ describe('Telegraf Session local : storageFileSync', () => {
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42
-    _localSession.saveSession(key, session).then(_session => {
+    _localSession.saveSession(key, session).then((_session) => {
       debug('Saved session %O', _session)
       should.exist(_session)
       _session.data.should.be.deepEqual({ foo: 42 })
