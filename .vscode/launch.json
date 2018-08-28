@@ -11,5 +11,20 @@
       "DEBUG": "telegraf:*"
     },
     "console": "integratedTerminal"
+  },
+  {
+    "type": "node",
+    "request": "launch",
+    "name": "Tests",
+    "runtimeExecutable": "npm",
+    "runtimeArgs": [
+      "run",
+      "test"
+    ],
+    "console": "integratedTerminal",
+    "env": {
+      "DEBUG": "telegraf:session-local:test"
+    },
+    "port": 9229
   }]
 }

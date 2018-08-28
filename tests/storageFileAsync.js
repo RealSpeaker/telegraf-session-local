@@ -6,9 +6,15 @@ const
   debug = require('debug')('telegraf:session-local:test'),
   options = { database: 'test_async_db.json', storage: LocalSession.storageFileAsync }
 
+let bot = {}
+let localSession = new LocalSession(options)
+
+// Wait for database async initialization finished
+before((done) => {
+  localSession.DB.then((DB) => { done() })
+})
+
 describe('Telegraf Session local : storageFileAsync', () => {
-  let bot = {}
-  let localSession = new LocalSession(options)
 
   it('storageFileAsync: Should retrieve and save session', (done) => {
     const key = '1:1' // ChatID:FromID
@@ -16,7 +22,7 @@ describe('Telegraf Session local : storageFileAsync', () => {
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42
-    localSession.saveSession(key, session).then(_session => {
+    localSession.saveSession(key, session).then((_session) => {
       debug('Saved session %O', _session)
       should.exist(_session)
       _session.data.should.be.deepEqual({ foo: 42 })
@@ -70,5 +76,25 @@ describe('Telegraf Session local : storageFileAsync', () => {
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
+  })
+
+  it('storageFileAsync: Should work properly with deprecated stoarge name - storagefileAsync', (done) => {
+    let _options = Object.assign({ storage: LocalSession.storagefileAsync }, options)
+    let _localSession = new LocalSession(_options)
+    // Wait for database async initialization finished
+    _localSession.DB.then((DB) => {
+      // console.log(DB.get('sessions').getById('1:1').value())
+      const key = '1:1' // ChatID:FromID
+      let session = _localSession.getSession(key)
+      debug('getSession %O', session)
+      should.exist(session)
+      session.foo = 42
+      _localSession.saveSession(key, session).then((_session) => {
+        debug('Saved session %O', _session)
+        should.exist(_session)
+        _session.data.should.be.deepEqual({ foo: 42 })
+        done()
+      })
+    })
   })
 })

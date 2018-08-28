@@ -10,6 +10,43 @@ describe('Telegraf Session local : General', () => {
   let bot = {}
   let localSession = new LocalSession(options)
 
+  it('Should works without specifying any options for LocalSession', (done) => {
+    bot = new Telegraf()
+    let session = new LocalSession()
+    bot.on('text', session.middleware(), (ctx) => {
+      should.exist(ctx.session)
+      done()
+    })
+    // Temporary using setTimeout() because `telegraf-local-session` doesn't handle async adapters correctly yet
+    setTimeout(() => {
+      bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
+    }, 25)
+  })
+
+  it('Should use custom `format.serialize` and `format.deserialize` functions', (done) => {
+    bot = new Telegraf()
+    let session = new LocalSession({
+      database: 'test_sync_db.json',
+      storage: LocalSession.storageFileSync,
+      format: {
+        // By default lowdb uses pretty-printed JSON string: JSON.stringify(obj, null, 2)
+        // We will override that behaviour calling it `oneline`, making one-lined JSON string
+        serialize: function oneline (obj) {
+          return JSON.stringify(obj)
+        },
+        deserialize: JSON.parse
+      }
+    })
+    bot.on('text', session.middleware(), (ctx) => {
+      should.exist(ctx.session)
+      ctx.session.wow = true
+      // ctx.session.should.have.property('wow')
+      // ctx.session.foo.should.be.equal(true)
+      done()
+    })
+    bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
+  })
+
   it('Should have access to lowdb instance via ctx.sessionDB', (done) => {
     bot = new Telegraf()
     bot.on('text', localSession.middleware(), (ctx) => {
@@ -38,5 +75,39 @@ describe('Telegraf Session local : General', () => {
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
+  })
+
+  it('Should return `undefined` when context has no `from` field', (done) => {
+    bot = new Telegraf()
+    bot.on('text', localSession.middleware(), (ctx) => {
+      debug('Telegraf context `from` field: %o', ctx.from)
+      should.not.exists(localSession.getSessionKey(ctx))
+      done()
+    })
+    bot.handleUpdate({ message: { chat: { id: 1 }, text: 'hey' } })
+  })
+
+  it('Should return `undefined` when no key provided for session to be saved', (done) => {
+    bot = new Telegraf()
+    bot.on('text', localSession.middleware(), (ctx) => {
+      let sessionKey = localSession.getSessionKey(ctx)
+      debug('Real session key calculated by LocalSession: %s', sessionKey)
+      should.not.exists(localSession.saveSession(undefined, { authenticated: false }))
+      done()
+    })
+    bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
+  })
+
+  it('Should detect if object is Promise/like or not', (done) => {
+    const isPromise = require('../lib/session').isPromise
+    function notPromise () { return null }
+    function promise () { return new Promise((resolve, reject) => resolve(null)) }
+    function promiseLike () { return { then: cb => cb(null) } }
+    isPromise(undefined).should.be.equal(false)
+    isPromise(true).should.be.equal(false)
+    isPromise(notPromise()).should.be.equal(false)
+    isPromise(promise()).should.be.equal(true)
+    isPromise(promiseLike()).should.be.equal(true)
+    done()
   })
 })

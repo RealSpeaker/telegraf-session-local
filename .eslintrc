@@ -1,0 +1,19 @@
+{
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "extends": "standard",
+  "plugins": ["mocha"],
+  "parserOptions": {
+    "ecmaVersion": 2016
+  },
+  "rules": {
+    "one-var": 0,
+    "comma-dangle": 0,
+    "new-cap": 0,
+    "padded-blocks": 0,
+    "brace-style": [0, "1tbs", { "allowSingleLine": true }]
+  }
+}
