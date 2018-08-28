@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>LocalSession - Documentation</title>
-
+    <title>LocalSession - Telegraf Session local Documentation</title>
+    
+    <meta name="description" content="Documentation for Telegraf Session local" />
+    
+        <meta name="keywords" content="Telegram Telegraf Session Local Database JSON XML" />
+        <meta name="keyword" content="Telegram Telegraf Session Local Database JSON XML" />
+    
+    
+    
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
@@ -11,6 +19,7 @@
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
@@ -22,7 +31,10 @@
 <label for="nav-trigger" class="overlay"></label>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="LocalSession.html">LocalSession</a><ul class='methods'><li data-type='method'><a href="LocalSession.html#getSessionKey">getSessionKey</a></li><li data-type='method'><a href="LocalSession.html#getSession">getSession</a></li><li data-type='method'><a href="LocalSession.html#saveSession">saveSession</a></li><li data-type='method'><a href="LocalSession.html#middleware">middleware</a></li></ul></li></ul><h3>Modules</h3><ul><li><a href="module-telegraf-session-local.html">telegraf-session-local</a></li></ul><h3>Global</h3><ul><li><a href="global.html#LocalSession.storagefileSync">LocalSession.storagefileSync</a></li><li><a href="global.html#LocalSession.storageFileSync">LocalSession.storageFileSync</a></li><li><a href="global.html#LocalSession.storagefileAsync">LocalSession.storagefileAsync</a></li><li><a href="global.html#LocalSession.storageFileAsync">LocalSession.storageFileAsync</a></li><li><a href="global.html#LocalSession.storageMemory">LocalSession.storageMemory</a></li><li><a href="global.html#LocalSession.storageBase">LocalSession.storageBase</a></li></ul>
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    <h2><a href="index.html">Home</a></h2><h2><a href="https://github.com/RealSpeaker/telegraf-session-local" target="_blank" class="menu-item" id="link_repo" >GitHub Repository ⧉</a></h2><h2><a href="https://www.npmjs.com/package/telegraf-session-local" target="_blank" class="menu-item" id="link_npm" >NPM Package ⧉</a></h2><h3>Modules</h3><ul><li><a href="module-telegraf-session-local.html">telegraf-session-local</a></li></ul><h3>Classes</h3><ul><li><a href="LocalSession.html">LocalSession</a><ul class='methods'><li data-type='method'><a href="LocalSession.html#getSession">getSession</a></li><li data-type='method'><a href="LocalSession.html#getSessionKey">getSessionKey</a></li><li data-type='method'><a href="LocalSession.html#middleware">middleware</a></li><li data-type='method'><a href="LocalSession.html#saveSession">saveSession</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#LocalSession.storageBase">LocalSession.storageBase</a></li><li><a href="global.html#LocalSession.storageFileAsync">LocalSession.storageFileAsync</a></li><li><a href="global.html#LocalSession.storageFileSync">LocalSession.storageFileSync</a></li><li><a href="global.html#LocalSession.storageMemory">LocalSession.storageMemory</a></li></ul>
 </nav>
 
 <div id="main">
@@ -49,9 +61,10 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
+            
 
     
     <h2>Constructor</h2>
@@ -357,7 +370,7 @@
 
             
 
-            <td class="description last"><p>lowdb storage option for implementing your own storage read/write operations <code>(default: <a href="global.html#LocalSession.storageFileAsync"><code>LocalSession.storageFileAsync</code></a>)</code></p>
+            <td class="description last"><p>lowdb storage option for implementing your own storage read/write operations <code>(default: <a href="global.html#LocalSession.storageFileSync"><code>LocalSession.storageFileSync</code></a>)</code></p>
                 <h6>Properties</h6>
                 
 
@@ -617,8 +630,9 @@
     
 
 
+        
+        </div>
     
-    </div>
 
     
 
@@ -631,18 +645,12 @@
     
 
     
-
-    
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Members</h3>
 
         
             
+<h4 class="name" id=".storagefileAsync"><span class="type-signature">(readonly) </span>.storagefileAsync<span class="type-signature"></span></h4>
 
-    
-
-    <h4 class="name" id="getSessionKey"><span class="type-signature"></span>getSessionKey<span class="signature">(ctx)</span><span class="type-signature"> &rarr; {String}</span></h4>
-
-    
 
 
 
@@ -652,7 +660,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session.js.html">session.js</a>, <a href="session.js.html#line93">line 93</a>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line213">line 213</a>
     </li></ul></dd>
     
 
@@ -692,7 +700,7 @@
 
 
 <div class="description">
-    <p>Get session key from <a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a></p>
+    <p>lowdb storage named <code><a href="https://git.io/vhM3m">fileAsync</a></code> before <code><a href="https://git.io/vhM3Z">lowdb@0.17.0</a></code></p>
 </div>
 
 
@@ -702,93 +710,74 @@
 
 
 
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
         
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
             
-                <td class="name"><code>ctx</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
+<h4 class="name" id=".storagefileSync"><span class="type-signature">(readonly) </span>.storagefileSync<span class="type-signature"></span></h4>
 
 
-            
-            </td>
 
-            
 
-            
 
-            <td class="description last"><p><a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a></p></td>
-        </tr>
+<dl class="details">
 
     
-    </tbody>
-</table>
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line189">line 189</a>
+    </li></ul></dd>
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-<h5>Returns:</h5>
+    
 
-        
-<div class="param-desc">
-    <p>Session key in format <code>number:number</code> (chat.id:from.id)</p>
-</div>
-
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">String</span>
-
-
-    </dd>
+    
 </dl>
 
+
+
+
+
+<div class="description">
+    <p>lowdb storage named <code><a href="https://git.io/vhM3Y">fileSync</a></code> before <code><a href="https://git.io/vhM3Z">lowdb@0.17.0</a></code></p>
+</div>
+
+
+
+
+
+
+
+
+        
     
 
+    
+        <h3 class="subsection-title">Methods</h3>
 
         
             
@@ -807,7 +796,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session.js.html">session.js</a>, <a href="session.js.html#line104">line 104</a>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line105">line 105</a>
     </li></ul></dd>
     
 
@@ -950,6 +939,324 @@
 
     
 
+    <h4 class="name" id="getSessionKey"><span class="type-signature"></span>getSessionKey<span class="signature">(ctx)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line94">line 94</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Get session key from <a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>ctx</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p><a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Session key in format <code>number:number</code> (chat.id:from.id)</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">String</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="middleware"><span class="type-signature"></span>middleware<span class="signature">(property<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line162">line 162</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Session middleware for use in Telegraf</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>property</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Name of property in <a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a> where session object will be located (overrides <code>property</code> at <a href="LocalSession.html"><code>LocalSession</code></a> constructor)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
     <h4 class="name" id="saveSession"><span class="type-signature"></span>saveSession<span class="signature">(key, data)</span><span class="type-signature"> &rarr; {Promise|function}</span></h4>
 
     
@@ -962,7 +1269,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session.js.html">session.js</a>, <a href="session.js.html#line118">line 118</a>
+        <a href="session.js.html">session.js</a>, <a href="session.js.html#line119">line 119</a>
     </li></ul></dd>
     
 
@@ -1129,169 +1436,6 @@
 
 
         
-            
-
-    
-
-    <h4 class="name" id="middleware"><span class="type-signature"></span>middleware<span class="signature">(property<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
-
-    
-
-
-
-
-<dl class="details">
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="session.js.html">session.js</a>, <a href="session.js.html#line161">line 161</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-<div class="description">
-    <p>Session middleware for use in Telegraf</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Attributes</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>property</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Name of property in <a href="https://telegraf.js.org/#/?id=context">Telegraf Context</a> where session object will be located (overrides <code>property</code> at <a href="LocalSession.html"><code>LocalSession</code></a> constructor)</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl class="param-type">
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-        
     
 
     
@@ -1304,6 +1448,8 @@
 
 
 
+    
+    
 </div>
 
 <br class="clear">
@@ -1314,5 +1460,13 @@
 
 <script>prettyPrint();</script>
 <script src="scripts/linenumber.js"></script>
+
+<script src="scripts/jquery-3.1.1.min.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+
+
 </body>
 </html>
