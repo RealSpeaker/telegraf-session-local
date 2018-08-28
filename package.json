@@ -42,27 +42,6 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json"
   },
-  "eslintConfig": {
-    "extends": [
-      "standard"
-    ],
-    "plugins": [
-      "mocha"
-    ],
-    "env": {
-      "mocha": true,
-      "node": true
-    },
-    "rules": {
-      "one-var": 0,
-      "comma-dangle": 0,
-      "new-cap": 0,
-      "brace-style": [0, "1tbs", { "allowSingleLine": true }]
-    }
-  },
-  "eslintIgnore": [
-    "docs/*"
-  ],
   "dependencies": {
     "debug": "^3.1.0",
     "lodash-id": "^0.14.0",
