@@ -43,7 +43,7 @@
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "debug": "^3.1.0",
+    "debug": "^4.0.0",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0"
   },
