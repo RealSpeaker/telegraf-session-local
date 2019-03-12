@@ -127,6 +127,6 @@ Also, you may read comments in  `/lib/session.js`
 
 ## 🎓 Licence &amp; copyright
 
-&copy; 2018 Tema Smirnov / <github.tema@smirnov.one> / [![Telegram](https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg)](https://goo.gl/YeV4gk)
+&copy; 2019 Tema Smirnov / <github.tema@smirnov.one> / [![Telegram](https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg)](https://goo.gl/YeV4gk)
 
 MIT - [RealSpeaker Group Ltd.](https://github.com/RealSpeaker)
