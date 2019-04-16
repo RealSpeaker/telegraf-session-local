@@ -62,7 +62,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "jsdoc": "^3.5.5",
     "mocha": "^6.1.1",
-    "nyc": "^13.3.0",
+    "nyc": "^14.0.0",
     "should": "^13.2.3",
     "telegraf": "^2.0.0 || ^3.0.0"
   }
