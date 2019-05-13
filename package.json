@@ -1,6 +1,6 @@
 {
   "name": "telegraf-session-local",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Telegraf local sessions middleware with multiple supported storage types (Memory/FileSync/FileAsync/...) using lowdb",
   "main": "lib/session.js",
   "repository": {
@@ -62,7 +62,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "jsdoc": "3.6.2",
     "mocha": "6.1.4",
-    "nyc": "^14.1.0",
+    "nyc": "^14.1.1",
     "should": "^13.2.3",
     "telegraf": "^2.0.0 || ^3.0.0"
   }

@@ -30,7 +30,7 @@
 
 <label for="nav-trigger" class="overlay"></label>
 
-<nav>
+<nav >
     
     <input type="text" id="nav-search" placeholder="Search" />
     
@@ -47,6 +47,11 @@
     
 
 
+    <section class="package">
+        <h3> </h3>		
+    </section>
+
+
 
 
 
@@ -57,49 +62,73 @@
     
 
 
+
     <section class="readme">
-        <article><h1><a href="https://github.com/telegraf/telegraf">Telegraf</a> Session local</h1><p><a href="https://www.npmjs.com/package/telegraf-session-local"><img src="https://img.shields.io/npm/v/telegraf-session-local.svg?style=flat-square" alt="NPM Version"></a><br><a href="https://www.npmjs.com/package/telegraf-session-local"><img src="https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square" alt="node"></a><br><a href="https://travis-ci.org/RealSpeaker/telegraf-session-local"><img src="https://travis-ci.org/RealSpeaker/telegraf-session-local.svg?branch=master" alt="Build Status"></a><br><a href="https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master"><img src="https://coveralls.io/repos/github/RealSpeaker/telegraf-session-local/badge.svg?branch=master" alt="Coverage Status"></a><br><a href="https://david-dm.org/realspeaker/telegraf-session-local"><img src="https://david-dm.org/realspeaker/telegraf-session-local.svg" alt="Dependency Status"></a><br><a href="http://standardjs.com/"><img src="https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat-square" alt="js-standard-style"></a><br><a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg" alt="Greenkeeper badge"></a></p>
+        <article><h1><a href="https://github.com/telegraf/telegraf">Telegraf</a> Session local</h1>
+<p><a href="https://www.npmjs.com/package/telegraf-session-local"><img src="https://img.shields.io/npm/v/telegraf-session-local.svg" alt="NPM Version"></a><br>
+<a href="https://www.npmjs.com/package/telegraf-session-local"><img src="https://img.shields.io/node/v/telegraf-session-local.svg" alt="node"></a><br>
+<a href="https://travis-ci.org/RealSpeaker/telegraf-session-local"><img src="https://travis-ci.org/RealSpeaker/telegraf-session-local.svg?branch=master" alt="Build Status"></a><br>
+<a href="https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master"><img src="https://coveralls.io/repos/github/RealSpeaker/telegraf-session-local/badge.svg?branch=master" alt="Coverage Status"></a><br>
+<a href="https://www.codacy.com/app/TemaSM/telegraf-session-local?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=RealSpeaker/telegraf-session-local&amp;utm_campaign=Badge_Grade"><img src="https://api.codacy.com/project/badge/Grade/761ed505ba2d44bd9a2bc598e68969e3" alt="Codacy Badge"></a><br>
+<a href="https://david-dm.org/realspeaker/telegraf-session-local"><img src="https://david-dm.org/realspeaker/telegraf-session-local.svg" alt="Dependency Status"></a><br>
+<a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/RealSpeaker/telegraf-session-local.svg" alt="Greenkeeper badge"></a></p>
 <blockquote>
 <p>Middleware for locally stored sessions &amp; database</p>
 </blockquote>
-<h3>⚡️ Features</h3><ul>
-<li>Any type of storage: <code>Memory</code>, <code>FileSync</code>, <code>FileAsync</code>, ... (implement your own)</li>
-<li>Any format you want: <code>JSON</code>, <code>BSON</code>, <code>YAML</code>, <code>XML</code>, ... (implement your own)</li>
-<li>Shipped together with power of <code>lodash</code></li>
-<li><p>Supports basic DB-like operations (thanks to <code>lodash-id</code>):</p>
+<h3>⚡️ Features</h3>
+<ul>
+<li>
+<p>Any type of storage: <code>Memory</code>, <code>FileSync</code>, <code>FileAsync</code>, ... (implement your own)</p>
+</li>
+<li>
+<p>Any format you want: <code>JSON</code>, <code>BSON</code>, <code>YAML</code>, <code>XML</code>, ... (implement your own)</p>
+</li>
+<li>
+<p>Shipped together with power of <code>lodash</code></p>
+</li>
+<li>
+<p>Supports basic DB-like operations (thanks to <a href="https://github.com/typicode/lodash-id">lodash-id</a>):</p>
 <p><code>getById</code>, <code>insert</code>, <code>upsert</code>, <code>updateById</code>, <code>updateWhere</code>, <code>replaceById</code>, <code>removeById</code>, <code>removeWhere</code>, <code>createId</code>,</p>
 </li>
 </ul>
-<h2>🚀 Installation</h2><pre class="prettyprint source lang-js"><code>$ npm install telegraf-session-local -S</code></pre><h3><a href="http://realspeaker.github.io/telegraf-session-local/">Documentation &amp; reference</a></h3><h2>👀 Quick-start example</h2><pre class="prettyprint source lang-js"><code>const
+<h2>🚀 Installation</h2>
+<pre class="prettyprint source lang-js"><code>$ npm install telegraf-session-local -S
+</code></pre>
+<h3><a href="http://realspeaker.github.io/telegraf-session-local/">Documentation &amp; API</a></h3>
+<h2>👀 Quick-start example</h2>
+<pre class="prettyprint source lang-js"><code>const
   Telegraf = require('telegraf'),
   LocalSession = require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
+const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
-Bot.use((new LocalSession({ database: 'example_db.json' })).middleware())
+bot.use((new LocalSession({ database: 'example_db.json' })).middleware())
 
-Bot.on('text', (ctx, next) => {
+bot.on('text', (ctx, next) => {
   ctx.session.counter = ctx.session.counter || 0
   ctx.session.counter++
   ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   return next()
 })
 
-Bot.command('/stats', (ctx) => {
+bot.command('/stats', (ctx) => {
   ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username || ctx.from.id}`)
 })
 
-Bot.command('/remove', (ctx) => {
+bot.command('/remove', (ctx) => {
   ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.session)}\``)
   // Setting session to null, undefined or empty object/array will trigger removing it from database
   ctx.session = null
 })
 
-Bot.startPolling()</code></pre><h2>💡 Full example</h2><pre class="prettyprint source lang-js"><code>const
+bot.startPolling()
+</code></pre>
+<h2>💡 Full example</h2>
+<pre class="prettyprint source lang-js"><code>const
   Telegraf = require('telegraf'),
   LocalSession = require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
+const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
 // Name of session property object in Telegraf Context (default: 'session')
 const property = 'data'
@@ -128,9 +157,9 @@ localSession.DB.then(DB => {
 })
 
 // Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` name
-Bot.use(localSession.middleware(property))
+bot.use(localSession.middleware(property))
 
-Bot.on('text', (ctx, next) => {
+bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
   ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
@@ -142,19 +171,23 @@ Bot.on('text', (ctx, next) => {
   return next()
 })
 
-Bot.command('/stats', (ctx) => {
+bot.command('/stats', (ctx) => {
   let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
   msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username || ctx.from.id}`
   ctx.replyWithMarkdown(msg)
 })
-Bot.command('/remove', (ctx) => {
+bot.command('/remove', (ctx) => {
   ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
   // Setting session to null, undefined or empty object/array will trigger removing it from database
   ctx[property] = null
 })
 
-Bot.startPolling()</code></pre><h4>Another examples located in <code>/examples</code> folder (PRs welcome)</h4><p>Also, you may read comments in  <code>/lib/session.js</code></p>
-<h2>🎓 Licence &amp; copyright</h2><p>&copy; 2019 Tema Smirnov / <a href="mailto:&#103;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#116;&#x65;&#x6d;&#97;&#64;&#x73;&#x6d;&#x69;&#114;&#110;&#111;&#118;&#x2e;&#x6f;&#x6e;&#101;">&#103;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#116;&#x65;&#x6d;&#97;&#64;&#x73;&#x6d;&#x69;&#114;&#110;&#111;&#118;&#x2e;&#x6f;&#x6e;&#101;</a> / <a href="https://goo.gl/YeV4gk"><img src="https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg" alt="Telegram"></a></p>
+bot.startPolling()
+</code></pre>
+<h4>Another examples located in <code>/examples</code> folder (PRs welcome)</h4>
+<p>Also, you may read comments in  <a href="https://github.com/RealSpeaker/telegraf-session-local/blob/master/lib/session.js">/lib/session.js</a></p>
+<h2>🎓 Licence &amp; copyright</h2>
+<p>© 2019 Tema Smirnov / <a href="mailto:github.tema@smirnov.one">github.tema@smirnov.one</a> / <a href="https://goo.gl/YeV4gk"><img src="https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg" alt="Telegram"></a></p>
 <p>MIT - <a href="https://github.com/RealSpeaker">RealSpeaker Group Ltd.</a></p></article>
     </section>
 
@@ -170,16 +203,14 @@ Bot.startPolling()</code></pre><h4>Another examples located in <code>/examples</
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
 <script src="scripts/linenumber.js"></script>
 
-<script src="scripts/jquery-3.1.1.min.js"></script>
-
-<script src="scripts/search.js"></script>
-
+<script src="scripts/search.js" defer></script>
 
 
 
