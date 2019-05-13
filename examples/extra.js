@@ -2,7 +2,7 @@ const
   Telegraf = require('telegraf'),
   LocalSession = require('../lib/session') // require('telegraf-session-local')
 
-const Bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
+const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
 // Name of session property object in Telegraf Context (default: 'session')
 const property = 'data'
@@ -31,9 +31,9 @@ localSession.DB.then(DB => {
 })
 
 // Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` name
-Bot.use(localSession.middleware(property))
+bot.use(localSession.middleware(property))
 
-Bot.on('text', (ctx, next) => {
+bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
   ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
@@ -45,15 +45,15 @@ Bot.on('text', (ctx, next) => {
   return next()
 })
 
-Bot.command('/stats', (ctx) => {
+bot.command('/stats', (ctx) => {
   let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
   msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username || ctx.from.id}`
   ctx.replyWithMarkdown(msg)
 })
-Bot.command('/remove', (ctx) => {
+bot.command('/remove', (ctx) => {
   ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
   // Setting session to null, undefined or empty object/array will trigger removing it from database
   ctx[property] = null
 })
 
-Bot.startPolling()
+bot.startPolling()
