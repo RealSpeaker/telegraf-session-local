@@ -40,12 +40,15 @@
     "lint": "eslint . --fix",
     "test": "nyc mocha tests --require should",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json"
+    "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "debug": "^4.1.1",
     "lodash-id": "^0.14.0",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "snyk": "^1.192.3"
   },
   "peerDependencies": {
     "telegraf": "^2.0.0 || ^3.0.0"
@@ -65,5 +68,6 @@
     "nyc": "^14.1.1",
     "should": "^13.2.3",
     "telegraf": "^2.0.0 || ^3.0.0"
-  }
+  },
+  "snyk": true
 }
