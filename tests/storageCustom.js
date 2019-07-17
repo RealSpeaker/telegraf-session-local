@@ -3,7 +3,7 @@ const
   Telegraf = require('telegraf'),
   LocalSession = require('../lib/session'),
   should = require('should'),
-  debug = require('debug')('telegraf:session-local:test')
+  debug = require('../lib/debug')('telegraf:session-local:test')
 
 // Custom adapter, it's like storageMemory
 // We even no need to extend storageBase, it's just for example purposes here

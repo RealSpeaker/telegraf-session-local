@@ -3,7 +3,7 @@ const
   Telegraf = require('telegraf'),
   LocalSession = require('../lib/session'),
   should = require('should'),
-  debug = require('debug')('telegraf:session-local:test'),
+  debug = require('../lib/debug')('telegraf:session-local:test'),
   options = { storage: LocalSession.storageMemory }
 
 describe('Telegraf Session local : storageMemory', () => {
