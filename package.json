@@ -43,11 +43,11 @@
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json"
   },
   "dependencies": {
-    "debug": "^4.1.1",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0"
   },
   "peerDependencies": {
+    "debug": "^2.0.0 || ^3.0.0 || ^4.0.0",
     "telegraf": "^2.0.0 || ^3.0.0"
   },
   "devDependencies": {
