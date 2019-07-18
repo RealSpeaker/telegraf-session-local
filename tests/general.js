@@ -8,11 +8,11 @@ const
 
 describe('Telegraf Session local : General', () => {
   let bot = {}
-  let localSession = new LocalSession(options)
+  const localSession = new LocalSession(options)
 
   it('Should works without specifying any options for LocalSession', (done) => {
     bot = new Telegraf()
-    let session = new LocalSession()
+    const session = new LocalSession()
     bot.on('text', session.middleware(), (ctx) => {
       should.exist(ctx.session)
       done()
@@ -25,7 +25,7 @@ describe('Telegraf Session local : General', () => {
 
   it('Should use custom `format.serialize` and `format.deserialize` functions', (done) => {
     bot = new Telegraf()
-    let session = new LocalSession({
+    const session = new LocalSession({
       database: 'test_sync_db.json',
       storage: LocalSession.storageFileSync,
       format: {
@@ -90,7 +90,7 @@ describe('Telegraf Session local : General', () => {
   it('Should return `undefined` when no key provided for session to be saved', (done) => {
     bot = new Telegraf()
     bot.on('text', localSession.middleware(), (ctx) => {
-      let sessionKey = localSession.getSessionKey(ctx)
+      const sessionKey = localSession.getSessionKey(ctx)
       debug('Real session key calculated by LocalSession: %s', sessionKey)
       should.not.exists(localSession.saveSession(undefined, { authenticated: false }))
       done()

@@ -8,7 +8,7 @@
     "program": "${workspaceRoot}/examples/simple.js",
     "env": {
       "BOT_TOKEN": "<YOUR_BOT_TOKEN>",
-      "DEBUG": "telegraf:*"
+      "DEBUG": "telegraf:session-local:*"
     },
     "console": "integratedTerminal"
   },
