@@ -102,7 +102,7 @@ describe('lodash + lodash-id', () => {
         }, /duplicate/)
         should.equal(db.posts.length, length)
         should.deepEqual(_.getById(db.posts, 2), { id: 2, body: 'two', published: false })
-        should.deepEqual(_.map(db.posts, 'id'), [ 1, 2, 3 ])
+        should.deepEqual(_.map(db.posts, 'id'), [1, 2, 3])
       })
     })
 
@@ -129,7 +129,7 @@ describe('lodash + lodash-id', () => {
 
       it('replaces in place and returns inserted doc', () => {
         const length = db.posts.length
-        const doc = _.upsert(db.posts, {id: 2, title: 'one'})
+        const doc = _.upsert(db.posts, { id: 2, title: 'one' })
 
         should.equal(db.posts.length, length)
         should.deepEqual(doc, { id: 2, title: 'one' })
@@ -140,7 +140,7 @@ describe('lodash + lodash-id', () => {
 
     describe('and id is not set', () => {
       it('inserts, sets an id and returns inserted doc', () => {
-        const doc = _.upsert(db.posts, {body: 'one'})
+        const doc = _.upsert(db.posts, { body: 'one' })
 
         should.equal(db.posts.length, 4)
         should(doc.id)
@@ -188,13 +188,13 @@ describe('lodash + lodash-id', () => {
 
   describe('__update', () => {
     it('copies properties from an object to another', () => {
-      let src = {
+      const src = {
         1: 'one',
         test: true,
         hello: 'world',
         leet: 1337
       }
-      let dst = {}
+      const dst = {}
       _.__update(dst, src)
 
       dst.should.containDeep(src)

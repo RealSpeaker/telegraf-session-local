@@ -12,7 +12,9 @@ class storageCustom extends LocalSession.storageBase {
     super()
     this.serialize = require('lowdb/adapters/_stringify')
   }
+
   read () { return this.defaultValue }
+
   write () {}
 }
 
@@ -20,11 +22,11 @@ const options = { storage: storageCustom }
 
 describe('Telegraf Session local : storageCustom', () => {
   let bot = {}
-  let localSession = new LocalSession(options)
+  const localSession = new LocalSession(options)
 
   it('storageCustom: Should retrieve and save session', (done) => {
     const key = '1:1' // ChatID:FromID
-    let session = localSession.getSession(key)
+    const session = localSession.getSession(key)
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42

@@ -8,11 +8,11 @@ const
 
 describe('Telegraf Session local : storageMemory', () => {
   let bot = {}
-  let localSession = new LocalSession(options)
+  const localSession = new LocalSession(options)
 
   it('storageMemory: Should retrieve and save session', (done) => {
     const key = '1:1' // ChatID:FromID
-    let session = localSession.getSession(key)
+    const session = localSession.getSession(key)
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42

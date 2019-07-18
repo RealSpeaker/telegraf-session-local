@@ -8,7 +8,7 @@ const
 
 describe('Telegraf Session local : Session Key Update Types', () => {
   let bot = {}
-  let localSession = new LocalSession(options)
+  const localSession = new LocalSession(options)
 
   it('Should handle message', (done) => {
     bot = new Telegraf()

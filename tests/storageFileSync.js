@@ -7,13 +7,13 @@ const
   options = { database: 'test_sync_db.json', storage: LocalSession.storageFileSync }
 
 let bot = {}
-let localSession = new LocalSession(options)
+const localSession = new LocalSession(options)
 
 describe('Telegraf Session local : storageFileSync', () => {
 
   it('storageFileSync: Should retrieve and save session', (done) => {
     const key = '1:1' // ChatID:FromID
-    let session = localSession.getSession(key)
+    const session = localSession.getSession(key)
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42
@@ -74,10 +74,10 @@ describe('Telegraf Session local : storageFileSync', () => {
   })
 
   it('storageFileSync: Should work properly with deprecated stoarge name - storagefileSync', (done) => {
-    let _options = Object.assign({ storage: LocalSession.storagefileSync }, options)
-    let _localSession = new LocalSession(_options)
+    const _options = Object.assign({ storage: LocalSession.storagefileSync }, options)
+    const _localSession = new LocalSession(_options)
     const key = '1:1' // ChatID:FromID
-    let session = _localSession.getSession(key)
+    const session = _localSession.getSession(key)
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42

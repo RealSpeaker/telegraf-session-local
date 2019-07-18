@@ -5,7 +5,7 @@
   "main": "lib/session.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/realspeaker/telegraf-session-local.git"
+    "url": "git+https://github.com/RealSpeaker/telegraf-session-local.git"
   },
   "keywords": [
     "telegram",
@@ -27,7 +27,7 @@
     "Edgar Toll <edjopato@gmail.com> (https://edjopato.de/)"
   ],
   "bugs": {
-    "url": "https://github.com/realspeaker/telegraf-session-local/issues"
+    "url": "https://github.com/RealSpeaker/telegraf-session-local/issues"
   },
   "homepage": "https://realspeaker.github.io/telegraf-session-local/",
   "engines": {
@@ -40,7 +40,9 @@
     "lint": "eslint . --fix",
     "test": "nyc mocha tests --require should",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json"
+    "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json",
+    "version": "npm run jsdoc && git add docs",
+    "release": "np"
   },
   "dependencies": {
     "lowdb": "^1.0.0"
@@ -61,8 +63,12 @@
     "eslint-plugin-standard": "^4.0.0",
     "jsdoc": "3.6.3",
     "mocha": "6.1.4",
+    "np": "*",
     "nyc": "^14.1.1",
     "should": "^13.2.3",
     "telegraf": "^2.0.0 || ^3.0.0"
+  },
+  "np": {
+    "yarn": false
   }
 }
