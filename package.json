@@ -34,7 +34,7 @@
     "node": ">=8"
   },
   "files": [
-    "lib/session.js"
+    "lib"
   ],
   "scripts": {
     "lint": "eslint . --fix",
