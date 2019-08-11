@@ -89,10 +89,10 @@ describe('Telegraf Session local : General', () => {
 
   it('Should return `undefined` when no key provided for session to be saved', (done) => {
     bot = new Telegraf()
-    bot.on('text', localSession.middleware(), (ctx) => {
+    bot.on('text', localSession.middleware(), async (ctx) => {
       const sessionKey = localSession.getSessionKey(ctx)
       debug('Real session key calculated by LocalSession: %s', sessionKey)
-      should.not.exists(localSession.saveSession(undefined, { authenticated: false }))
+      should.not.exists(await localSession.saveSession(undefined, { authenticated: false }))
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })

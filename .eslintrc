@@ -7,7 +7,7 @@
   "extends": "standard",
   "plugins": ["mocha"],
   "parserOptions": {
-    "ecmaVersion": 2016
+    "ecmaVersion": 2017
   },
   "rules": {
     "one-var": 0,

@@ -16,18 +16,16 @@ before((done) => {
 
 describe('Telegraf Session local : storageFileAsync', () => {
 
-  it('storageFileAsync: Should retrieve and save session', (done) => {
+  it('storageFileAsync: Should retrieve and save session', async () => {
     const key = '1:1' // ChatID:FromID
     const session = localSession.getSession(key)
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42
-    localSession.saveSession(key, session).then((_session) => {
-      debug('Saved session %O', _session)
-      should.exist(_session)
-      _session.data.should.be.deepEqual({ foo: 42 })
-      done()
-    })
+    const _session = await localSession.saveSession(key, session)
+    debug('Saved session %O', _session)
+    should.exist(_session)
+    _session.data.should.be.deepEqual({ foo: 42 })
   })
 
   it('storageFileAsync: Should has session', (done) => {
@@ -82,19 +80,18 @@ describe('Telegraf Session local : storageFileAsync', () => {
     const _options = Object.assign({ storage: LocalSession.storagefileAsync }, options)
     const _localSession = new LocalSession(_options)
     // Wait for database async initialization finished
-    _localSession.DB.then((DB) => {
+    _localSession.DB.then(async (DB) => {
       // console.log(DB.get('sessions').getById('1:1').value())
       const key = '1:1' // ChatID:FromID
       const session = _localSession.getSession(key)
       debug('getSession %O', session)
       should.exist(session)
       session.foo = 42
-      _localSession.saveSession(key, session).then((_session) => {
-        debug('Saved session %O', _session)
-        should.exist(_session)
-        _session.data.should.be.deepEqual({ foo: 42 })
-        done()
-      })
+      const _session = await _localSession.saveSession(key, session)
+      debug('Saved session %O', _session)
+      should.exist(_session)
+      _session.data.should.be.deepEqual({ foo: 42 })
+      done()
     })
   })
 })
