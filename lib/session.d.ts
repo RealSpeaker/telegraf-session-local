@@ -7,7 +7,10 @@ declare module 'telegraf-session-local' {
     database?: string
     property?: string
     state?: object
-    format?: object
+    format?: {
+        serialize?: (value: any) => string;
+        deserialize?: (value: string) => any;
+    };
     getSessionKey?: (ctx: ContextMessageUpdate) => string
   }
 
