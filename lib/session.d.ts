@@ -28,7 +28,5 @@ declare module 'telegraf-session-local' {
     static get storageBase(): BaseAdapter
   }
 
-  export function isPromise(obj: any): boolean
   export default LocalSession
 }
-
