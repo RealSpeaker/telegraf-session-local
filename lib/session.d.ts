@@ -14,14 +14,14 @@ declare module 'telegraf-session-local' {
     getSessionKey?: (ctx: ContextMessageUpdate) => string
   }
 
-  class LocalSession<Session> {
+  class LocalSession<TSession> {
     public DB: AdapterSync | AdapterAsync
 
     constructor(options?: LocalSessionOptions)
 
     getSessionKey(ctx: ContextMessageUpdate): string
-    getSession(key: string): Session
-    saveSession(key: string, data: Session): Promise<any>
+    getSession(key: string): TSession
+    saveSession(key: string, data: TSession): Promise<any>
     middleware(property?: string): Middleware<ContextMessageUpdate>
     static get storagefileSync(): AdapterSync
     static get storagefileAsync(): AdapterAsync
