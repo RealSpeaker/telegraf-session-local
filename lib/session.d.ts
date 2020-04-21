@@ -1,6 +1,7 @@
 declare module 'telegraf-session-local' {
   import { AdapterSync, AdapterAsync, BaseAdapter } from 'lowdb'
   import { ContextMessageUpdate, Middleware } from 'telegraf'
+  import * as Lowdb from "lowdb";
 
   export interface LocalSessionOptions<TSession> {
     storage?: AdapterSync | AdapterAsync
@@ -15,7 +16,7 @@ declare module 'telegraf-session-local' {
   }
 
   class LocalSession<TSession> {
-    public DB: AdapterSync | AdapterAsync
+    public DB: Lowdb.lowdb
 
     constructor(options?: LocalSessionOptions<TSession>)
 
