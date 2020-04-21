@@ -24,8 +24,6 @@ declare module 'telegraf-session-local' {
     getSession(key: string): TSession
     saveSession(key: string, data: TSession): Promise<any>
     middleware(property?: string): Middleware<ContextMessageUpdate>
-    static get storagefileSync(): AdapterSync
-    static get storagefileAsync(): AdapterAsync
     static get storageFileSync(): AdapterSync
     static get storageFileAsync(): AdapterAsync
     static get storageMemory(): AdapterSync
