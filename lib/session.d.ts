@@ -2,10 +2,6 @@ declare module 'telegraf-session-local' {
   import { AdapterSync, AdapterAsync, BaseAdapter } from 'lowdb'
   import { ContextMessageUpdate, Middleware } from 'telegraf'
 
-  export interface LocalSessionState<TState> {
-    state: TState
-  }
-
   export interface LocalSessionOptions {
     storage?: AdapterSync | AdapterAsync
     database?: string
