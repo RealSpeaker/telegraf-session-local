@@ -2,14 +2,14 @@ declare module 'telegraf-session-local' {
   import { AdapterSync, AdapterAsync, BaseAdapter } from 'lowdb'
   import { ContextMessageUpdate, Middleware } from 'telegraf'
 
-  export interface LocalSessionOptions {
+  export interface LocalSessionOptions<TSession> {
     storage?: AdapterSync | AdapterAsync
     database?: string
     property?: string
-    state?: object
+    state?: TSession
     format?: {
-        serialize?: (value: any) => string;
-        deserialize?: (value: string) => any;
+        serialize?: (value: TSession) => string;
+        deserialize?: (value: string) => TSession;
     };
     getSessionKey?: (ctx: ContextMessageUpdate) => string
   }
@@ -17,7 +17,7 @@ declare module 'telegraf-session-local' {
   class LocalSession<TSession> {
     public DB: AdapterSync | AdapterAsync
 
-    constructor(options?: LocalSessionOptions)
+    constructor(options?: LocalSessionOptions<TSession>)
 
     getSessionKey(ctx: ContextMessageUpdate): string
     getSession(key: string): TSession
@@ -33,4 +33,3 @@ declare module 'telegraf-session-local' {
 
   export default LocalSession
 }
-
