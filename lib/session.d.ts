@@ -22,7 +22,7 @@ declare module 'telegraf-session-local' {
 
     getSessionKey(ctx: ContextMessageUpdate): string
     getSession(key: string): TSession
-    saveSession(key: string, data: TSession): Promise<any>
+    saveSession(key: string, data: TSession): Promise<TSession>
     middleware(property?: string): Middleware<ContextMessageUpdate>
     static get storagefileSync(): AdapterSync
     static get storagefileAsync(): AdapterAsync
