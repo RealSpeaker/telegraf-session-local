@@ -42,10 +42,13 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json",
     "version": "npm run jsdoc && git add docs",
-    "release": "np"
+    "release": "np",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "snyk": "^1.316.2"
   },
   "peerDependencies": {
     "debug": "^2.0.0 || ^3.0.0 || ^4.0.0",
@@ -70,5 +73,6 @@
   },
   "np": {
     "yarn": false
-  }
+  },
+  "snyk": true
 }
