@@ -8,14 +8,14 @@ declare module 'telegraf-session-local' {
     property?: string
     state?: TSession
     format?: {
-        serialize?: (value: TSession) => string;
-        deserialize?: (value: string) => TSession;
-    };
+        serialize?: (value: TSession) => string
+        deserialize?: (value: string) => TSession
+    }
     getSessionKey?: (ctx: ContextMessageUpdate) => string
   }
 
   class LocalSession<TSession> {
-    public DB: lowdb
+    public DB: unknown
 
     constructor(options?: LocalSessionOptions<TSession>)
 
