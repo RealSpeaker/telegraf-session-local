@@ -29,5 +29,5 @@ declare module 'telegraf-session-local' {
     static get storageBase(): BaseAdapter
   }
 
-  export default LocalSession
+  export = LocalSession
 }
