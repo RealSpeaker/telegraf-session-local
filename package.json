@@ -24,7 +24,7 @@
   "author": "Tema Smirnov <npm.tema@smirnov.one>",
   "license": "MIT",
   "contributors": [
-    "Edgar Toll <edjopato@gmail.com> (https://edjopato.de/)"
+    "EdJoPaTo <telegraf-session-local-npm-package@edjopato.de> (https://edjopato.de/)"
   ],
   "bugs": {
     "url": "https://github.com/RealSpeaker/telegraf-session-local/issues"
@@ -50,7 +50,7 @@
   },
   "peerDependencies": {
     "debug": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "telegraf": "^2.0.0 || ^3.0.0"
+    "telegraf": "^3.38.0"
   },
   "devDependencies": {
     "coveralls": "^3.1.0",
@@ -67,7 +67,7 @@
     "np": "*",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
-    "telegraf": "^2.0.0 || ^3.0.0"
+    "telegraf": "^3.38.0"
   },
   "np": {
     "yarn": false
