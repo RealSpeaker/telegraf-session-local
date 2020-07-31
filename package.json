@@ -63,7 +63,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "jsdoc": "^3.6.5",
-    "mocha": "^8.0.1",
+    "mocha": "^8.1.0",
     "np": "*",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
