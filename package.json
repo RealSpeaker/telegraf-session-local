@@ -50,7 +50,7 @@
   },
   "peerDependencies": {
     "debug": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "telegraf": "^3.38.0"
+    "telegraf": "^4.0.1"
   },
   "devDependencies": {
     "coveralls": "^3.1.0",
@@ -67,7 +67,7 @@
     "np": "*",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
-    "telegraf": "^3.38.0"
+    "telegraf": "^4.0.1"
   },
   "np": {
     "yarn": false
