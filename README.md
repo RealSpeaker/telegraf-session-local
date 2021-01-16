@@ -30,9 +30,8 @@ $ npm install telegraf-session-local -S
 ## 👀 Quick-start example
 
 ```js
-const
-  Telegraf = require('telegraf'),
-  LocalSession = require('telegraf-session-local')
+const {Telegraf} = require('telegraf')
+const LocalSession = require('../lib/session') // require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
@@ -55,15 +54,14 @@ bot.command('/remove', (ctx) => {
   ctx.session = null
 })
 
-bot.startPolling()
+bot.launch()
 ```
 
 ## 💡 Full example
 
 ```js
-const
-  Telegraf = require('telegraf'),
-  LocalSession = require('telegraf-session-local')
+const {Telegraf} = require('telegraf')
+const LocalSession = require('../lib/session') // require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
@@ -119,12 +117,12 @@ bot.command('/remove', (ctx) => {
   ctx[property] = null
 })
 
-bot.startPolling()
+bot.launch()
 ```
 
 #### Another examples located in `/examples` folder (PRs welcome)
 Also, you may read comments in  [/lib/session.js](https://github.com/RealSpeaker/telegraf-session-local/blob/master/lib/session.js)
 
-#  
+#
 
 Tema Smirnov and contributors / <github.tema@smirnov.one> / [![Telegram](https://img.shields.io/badge/%F0%9F%92%AC%20Telegram-%40TemaSM-blue.svg)](https://goo.gl/YeV4gk)

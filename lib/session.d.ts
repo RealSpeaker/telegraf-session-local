@@ -1,7 +1,6 @@
 declare module 'telegraf-session-local' {
   import { AdapterSync, AdapterAsync, BaseAdapter } from 'lowdb'
-  import { Context } from 'telegraf'
-  import { MiddlewareFn } from 'telegraf/typings/composer'
+  import { Context, Middleware } from 'telegraf'
 
   export interface LocalSessionOptions<TSession> {
     storage?: AdapterSync | AdapterAsync
@@ -23,7 +22,7 @@ declare module 'telegraf-session-local' {
     getSessionKey(ctx: Context): string
     getSession(key: string): TSession
     saveSession(key: string, data: TSession): Promise<TSession>
-    middleware(property?: string): MiddlewareFn<Context>
+    middleware(property?: string): Middleware<Context>
     static get storageFileSync(): AdapterSync
     static get storageFileAsync(): AdapterAsync
     static get storageMemory(): AdapterSync
