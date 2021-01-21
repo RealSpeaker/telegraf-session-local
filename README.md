@@ -31,7 +31,7 @@ $ npm install telegraf-session-local -S
 
 ```js
 const {Telegraf} = require('telegraf')
-const LocalSession = require('../lib/session') // require('telegraf-session-local')
+const LocalSession = require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
@@ -61,7 +61,7 @@ bot.launch()
 
 ```js
 const {Telegraf} = require('telegraf')
-const LocalSession = require('../lib/session') // require('telegraf-session-local')
+const LocalSession = require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
