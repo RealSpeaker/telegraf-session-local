@@ -1,6 +1,6 @@
 /* eslint object-curly-spacing: ["error", "always"] */
 const
-  Telegraf = require('telegraf'),
+  {Telegraf} = require('telegraf'),
   LocalSession = require('../lib/session'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
@@ -27,6 +27,7 @@ describe('Telegraf Session local : storageFileSync', () => {
 
   it('storageFileSync: Should has session', (done) => {
     bot = new Telegraf()
+    bot.botInfo = {};
     bot.on('text', localSession.middleware(), (ctx) => {
       debug('Middleware session %O', ctx.session)
       should.exist(ctx.session)
@@ -39,6 +40,7 @@ describe('Telegraf Session local : storageFileSync', () => {
 
   it('storageFileSync: Should handle existing session', (done) => {
     bot = new Telegraf()
+    bot.botInfo = {};
     bot.on('text', localSession.middleware(), (ctx) => {
       debug('Existing Middleware session %O', ctx.session)
       should.exist(ctx.session)
@@ -51,6 +53,7 @@ describe('Telegraf Session local : storageFileSync', () => {
 
   it('storageFileSync: Should handle not existing session', (done) => {
     bot = new Telegraf()
+    bot.botInfo = {};
     bot.on('text', localSession.middleware(), (ctx) => {
       debug('Not Existing Middleware session %O', ctx.session)
       should.exist(ctx.session)
@@ -62,6 +65,7 @@ describe('Telegraf Session local : storageFileSync', () => {
 
   it('storageFileSync: Should handle session reset', (done) => {
     bot = new Telegraf()
+    bot.botInfo = {};
     bot.on('text', localSession.middleware(), (ctx) => {
       debug('Middleware session reset - before %O', ctx.session)
       ctx.session = null
