@@ -1,6 +1,5 @@
-const
-  Telegraf = require('telegraf'),
-  LocalSession = require('../lib/session') // require('telegraf-session-local')
+const {Telegraf} = require('telegraf')
+const LocalSession = require('../lib/session') // require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
@@ -56,4 +55,4 @@ bot.command('/remove', (ctx) => {
   ctx[property] = null
 })
 
-bot.startPolling()
+bot.launch()

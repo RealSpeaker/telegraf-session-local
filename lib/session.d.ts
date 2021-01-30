@@ -1,7 +1,8 @@
 declare module 'telegraf-session-local' {
   import { AdapterSync, AdapterAsync, BaseAdapter } from 'lowdb'
   import { Context } from 'telegraf'
-  import { MiddlewareFn } from 'telegraf/typings/composer'
+
+  type MiddlewareFn<C extends Context> = (ctx: C, next: () => Promise<void>) => Promise<void>
 
   export interface LocalSessionOptions<TSession> {
     storage?: AdapterSync | AdapterAsync
