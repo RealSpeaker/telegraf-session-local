@@ -31,7 +31,7 @@
   },
   "homepage": "https://realspeaker.github.io/telegraf-session-local/",
   "engines": {
-    "node": ">=8"
+    "node": ">=12"
   },
   "files": [
     "lib"
