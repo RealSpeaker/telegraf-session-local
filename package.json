@@ -37,12 +37,12 @@
     "lib"
   ],
   "scripts": {
-    "lint": "eslint . --fix",
-    "test": "nyc mocha tests --require should",
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "jsdoc": "node_modules/.bin/jsdoc -c jsdoc.json",
+    "lint": "npx eslint . --fix",
+    "test": "npx nyc mocha tests --require should",
+    "coverage": "npx nyc report --reporter=text-lcov | coveralls",
+    "jsdoc": "npx jsdoc -c jsdoc.json",
     "version": "npm run jsdoc && git add docs",
-    "release": "np"
+    "release": "npx np"
   },
   "dependencies": {
     "@types/lowdb": "^1.0.9",
