@@ -1,11 +1,11 @@
 {
-	"extends": "@sindresorhus/tsconfig",
-	"include": [
-		"source"
-	],
-	"compilerOptions": {
+  "extends": "@sindresorhus/tsconfig",
+  "include": [
+    "source"
+  ],
+  "compilerOptions": {
     "allowJs": true,
     "sourceMap": true,
-		"outDir": "dist"
-	}
+    "outDir": "dist"
+  }
 }
