@@ -1,7 +1,7 @@
 /* eslint object-curly-spacing: ["error", "always"] */
 const
   { Telegraf } = require('telegraf'),
-  LocalSession = require('../lib/session'),
+  { LocalSession } = require('../dist'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test')
 

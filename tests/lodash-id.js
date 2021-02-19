@@ -1,7 +1,7 @@
 const
   should = require('should'),
   // debug = require('debug')('telegraf:session-local:test'),
-  _db = require('../lib/lodash-id.js')
+  _db = require('lodash-id')
 
 describe('lodash + lodash-id', () => {
   let db

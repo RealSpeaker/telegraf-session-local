@@ -1,31 +1,68 @@
-const Debug = require('debug')
-const lowdb = require('lowdb')
-const storageFileAsync = require('lowdb/adapters/FileAsync')
-const storageFileSync = require('lowdb/adapters/FileSync')
-const storageMemory = require('lowdb/adapters/Memory')
+import {Context as TelegrafContext, MiddlewareFn} from 'telegraf'
+import * as lowdb from 'lowdb'
+import * as storageFileAsync from 'lowdb/adapters/FileAsync'
+import * as storageFileSync from 'lowdb/adapters/FileSync'
+import * as storageMemory from 'lowdb/adapters/Memory'
+import Debug from 'debug'
+import isPromise from 'is-promise'
 
-const lodashId = require('./lodash-id.js')
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const lodashId = require('lodash-id')
+
+export interface LocalSessionOptions<TSession> {
+  /**
+   * lowdb storage option for implementing your own storage read/write operations `default:` {@link LocalSession.storageFileSync|LocalSession.storageFileSync}
+   */
+  storage: lowdb.AdapterSync | lowdb.AdapterAsync;
+
+  /**
+   * Name or path to database file `default:` `'sessions.json'`
+   */
+  database: string;
+
+  /**
+   * Name of property in {@link https://telegraf.js.org/#/?id=context|Telegraf Context} where session object will be located `default:` `'session'`
+   */
+  property: string;
+
+  /**
+   * Initial state of database. You can use it to pre-init database Arrays/Objects to store your own data `default:` `{}`
+   */
+  state: TSession;
+
+  /**
+   * lowdb storage format option for implementing your own database format for read/write operations
+   */
+  format: {
+    /**
+     * lowdb storage serialize function, must return data (usually string) `default:` {@link https://goo.gl/dmGpZd|JSON.stringify()}
+     */
+    serialize?: (value: TSession) => string;
+
+    /**
+     * lowdb storage deserialize function, must return an object `default:` {@link https://goo.gl/wNy3ar|JSON.parse()}
+     */
+    deserialize?: (value: string) => TSession;
+  };
+
+  /**
+   * Function to get identifier for session from {@link https://telegraf.js.org/#/?id=context|Telegraf Context} (may implement it on your own)
+   */
+  getSessionKey: (ctx: TelegrafContext) => string;
+}
 
 const debug = Debug('telegraf:session-local')
 
 /**
  * Represents a wrapper around locally stored session, it's {@link LocalSession#middleware|middleware} & lowdb
- *
- * @param {Object} [options] - Options for {@link LocalSession|LocalSession} & {@link https://github.com/typicode/lowdb|lowdb}
- * @param {String} [options.database] - Name or path to database file `default:` `'sessions.json'`
- * @param {String} [options.property] - Name of property in {@link https://telegraf.js.org/#/?id=context|Telegraf Context} where session object will be located `default:` `'session'`
- * @param {Object} [options.state] - Initial state of database. You can use it to pre-init database Arrays/Objects to store your own data `default:` `{}`
- * @param {Function} [options.getSessionKey] - Function to get identifier for session from {@link https://telegraf.js.org/#/?id=context|Telegraf Context} (may implement it on your own)
- * @param {Object} [options.storage] - lowdb storage option for implementing your own storage read/write operations `default:` {@link LocalSession.storageFileSync|LocalSession.storageFileSync}
- * @param {Function} [options.storage.read] - lowdb storage read function, must return an object or a Promise
- * @param {Function} [options.storage.write] - lowdb storage write function, must return undefined or a Promise
- * @param {Object} [options.format] - lowdb storage format option for implementing your own database format for read/write operations
- * @param {Function} [options.format.serialize] - lowdb storage serialize function, must return data (usually string) `default:` {@link https://goo.gl/dmGpZd|JSON.stringify()}
- * @param {Function} [options.format.deserialize] - lowdb storage deserialize function, must return an object `default:` {@link https://goo.gl/wNy3ar|JSON.parse()}
- * @returns Instance of {@link LocalSession|LocalSession}
  */
-class LocalSession {
-  constructor (options = {}) {
+export class LocalSession<TSession> {
+  public DB: any
+
+  private readonly _adapter: any
+  private readonly options: LocalSessionOptions<TSession>
+
+  constructor (options: Partial<LocalSessionOptions<TSession>> = {}) {
     this.options = Object.assign({
       // TODO: Use storageFileAsync as default with support of Promise or Promise-like initialization, see: https://git.io/fA3ZN
       storage: LocalSession.storageFileSync,
@@ -33,13 +70,13 @@ class LocalSession {
       property: 'session',
       state: { },
       format: { },
-      getSessionKey: (ctx) => {
+      getSessionKey: (ctx: TelegrafContext) => {
         if (!ctx.from) return // should never happen
 
         let chatInstance
         if (ctx.chat) {
           chatInstance = ctx.chat.id
-        } else if (ctx.updateType === 'callback_query') {
+        } else if (ctx.callbackQuery) {
           chatInstance = ctx.callbackQuery.chat_instance
         } else { // if (ctx.updateType === 'inline_query') {
           chatInstance = ctx.from.id
@@ -75,26 +112,26 @@ class LocalSession {
       debug('DbInstance is Promise like')
       // TODO: Split it from constructor, because this code will produce glitches if async initiating may take too long time
       this.DB = DbInstance
-      this.DB.then((DB) => {
+      this.DB.then((DB: any) => {
         debug('DbInstance Promise resolved')
         this.DB = DB
-        _initDB.call(this)
+        this._initDB()
       })
     }
     // If lowdb initiated with sync adapter
     else {
       this.DB = DbInstance
-      _initDB.call(this)
+      this._initDB()
     }
   }
 
   /**
    * Get session key from {@link https://telegraf.js.org/#/?id=context|Telegraf Context}
    *
-   * @param {Object} ctx - {@link https://telegraf.js.org/#/?id=context|Telegraf Context}
-   * @returns {String} Session key in format `number:number` (chat.id:from.id)
+   * @param ctx - {@link https://telegraf.js.org/#/?id=context|Telegraf Context}
+   * @returns Session key in format `number:number` (chat.id:from.id)
    */
-  getSessionKey (ctx) {
+  getSessionKey (ctx: TelegrafContext) {
     this._called()
     return this.options.getSessionKey(ctx)
   }
@@ -102,10 +139,10 @@ class LocalSession {
   /**
    * Get session by it's key in database
    *
-   * @param {String} key - Key which will be used to find associated session object
-   * @returns {Object} Session data object or empty object if there's no session in database with this key
+   * @param key - Key which will be used to find associated session object
+   * @returns Session data object or empty object if there's no session in database with this key
    */
-  getSession (key) {
+  getSession (key: string) {
     this._called(arguments)
     const session = this.DB.get('sessions').getById(key).value() || {}
     debug('Session state', session)
@@ -115,11 +152,11 @@ class LocalSession {
   /**
    * Save session to database
    *
-   * @param {String} key - Unique Key which will be used to store session object
-   * @param {Object} data - Session data object (if empty, session will be removed from database)
-   * @returns {Promise|Function} - Promise or Promise-like `.then()` function, with session object at 1-st argument
+   * @param key - Unique Key which will be used to store session object
+   * @param data - Session data object (if empty, session will be removed from database)
+   * @returns - Promise or Promise-like `.then()` function, with session object at 1-st argument
    */
-  async saveSession (key, data) {
+  async saveSession (key: string, data: TSession) {
     this._called(arguments)
     if (!key) return
     // If there's no data provided or it's empty, we should remove session record from database
@@ -149,10 +186,9 @@ class LocalSession {
   /**
    * Session middleware for use in Telegraf
    *
-   * @param {String} [property] - Name of property in {@link https://telegraf.js.org/#/?id=context|Telegraf Context} where session object will be located (overrides `property` at {@link LocalSession} constructor)
-   * @returns {Promise}
+   * @param property - Name of property in {@link https://telegraf.js.org/#/?id=context|Telegraf Context} where session object will be located (overrides `property` at {@link LocalSession} constructor)
    */
-  middleware (property = this.options.property) {
+  middleware (property = this.options.property): MiddlewareFn<TelegrafContext> {
     const that = this
     return async (ctx, next) => {
       const key = that.getSessionKey(ctx)
@@ -162,13 +198,13 @@ class LocalSession {
       debug('Session data: %o', session)
       // Assigning session object to the Telegraf Context using `property` as a variable name
       Object.defineProperty(ctx, property, {
-        get: function () { return session },
-        set: function (newValue) { session = Object.assign({}, newValue) }
+        get: () => session,
+        set: (newValue) => { session = Object.assign({}, newValue) }
       })
       // Make lowdb available in the Telegraf Context
       Object.defineProperty(ctx, `${property}DB`, {
-        get: function () { return that.DB },
-        set: function () { }
+        get: () => that.DB,
+        set: () => { }
       })
       // Saving session object on the next middleware
       await next()
@@ -254,37 +290,19 @@ class LocalSession {
   /**
    * For Debugging purposes only - shows info about what, where & with what args was called
    *
-   * @param {Object} args - Called function's arguments
+   * @param args - Called function's arguments
    * @private
    */
-  _called (args) {
-    debug('Called function: \n\t-> %s \n\t-> Arguments: \n\t-> %o', ((new Error().stack).split('at ')[2]).trim(), this.DB._.values(args))
+  private _called (...args: unknown[]) {
+    debug('Called function: \n\t-> %s \n\t-> Arguments: \n\t-> %o', ((new Error().stack)?.split('at ')[2])?.trim(), this.DB._.values(args))
+  }
+
+  private _initDB() {
+    // Use ID based resources, so we can query records by ID (ex.: getById(), removeById(), ...)
+    this.DB._.mixin(lodashId)
+    // If database is empty, fill it with empty Array of sessions and optionally with initial state
+    this.DB.defaults(Object.assign({ sessions: [] }, this.options.state)).write()
+    debug('Initiating finished')
+    return true
   }
 }
-
-function _initDB () {
-  // Use ID based resources, so we can query records by ID (ex.: getById(), removeById(), ...)
-  this.DB._.mixin(lodashId)
-  // If database is empty, fill it with empty Array of sessions and optionally with initial state
-  this.DB.defaults(Object.assign({ sessions: [] }, this.options.state)).write()
-  debug('Initiating finished')
-  return true
-}
-
-// Credits to `is-promise` package
-function isPromise (obj) {
-  return !!obj && (typeof obj === 'object' || typeof obj === 'function') && typeof obj.then === 'function'
-}
-
-/**
- * @overview {@link http://telegraf.js.org/|Telegraf} Session middleware for storing sessions locally (Memory/FileSync/FileAsync/...)
- * @module telegraf-session-local
- * @license MIT
- * @author Tema Smirnov <git.tema@smirnov.one>
- * @requires {@link https://www.npmjs.com/package/telegraf|npm: telegraf}
- * @requires {@link https://www.npmjs.com/package/lowdb|npm: lowdb}
- * @see {@link http://telegraf.js.org/|Telegraf} | {@link https://github.com/typicode/lowdb|lowdb}
- * @exports LocalSession
- */
-module.exports = LocalSession
-module.exports.isPromise = isPromise

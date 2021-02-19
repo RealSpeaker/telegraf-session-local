@@ -3,6 +3,7 @@
 coverage
 .self_coverage
 *.covered.js
+dist
 
 # Databases
 *_db.json

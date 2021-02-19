@@ -2,7 +2,6 @@
   "name": "telegraf-session-local",
   "version": "2.1.0",
   "description": "Telegraf local sessions middleware with multiple supported storage types (Memory/FileSync/FileAsync/...) using lowdb",
-  "main": "lib/session.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RealSpeaker/telegraf-session-local.git"
@@ -34,38 +33,100 @@
     "node": ">=12"
   },
   "files": [
-    "lib"
+    "dist",
+    "!*.test.*"
   ],
   "scripts": {
-    "lint": "npx eslint . --fix",
-    "test": "npx nyc mocha tests --require should",
-    "coverage": "npx nyc report --reporter=lcovonly",
-    "jsdoc": "npx jsdoc -c jsdoc.json",
-    "version": "npm run jsdoc && git add docs",
-    "release": "npx np"
+    "build": "del-cli dist && tsc",
+    "prepack": "npm run build",
+    "lint": "xo",
+    "test": "tsc --sourceMap && xo && nyc mocha tests --require should",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "release": "np"
   },
   "dependencies": {
     "@types/lowdb": "^1.0.9",
+    "is-promise": "^4.0.0",
+    "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0"
   },
   "peerDependencies": {
-    "debug": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "telegraf": "^3.38.0 || ^4.0.0"
+    "debug": "^4.0.0",
+    "telegraf": "^4.0.0"
   },
   "devDependencies": {
-    "docdash": "^1.2.0",
-    "eslint": "^7.30.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-mocha": "^9.0.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "jsdoc": "^3.6.7",
-    "mocha": "^9.0.2",
+    "@sindresorhus/tsconfig": "^0.8.0",
+    "@types/debug": "^4.1.5",
+    "@types/node": "^14.14.31",
+    "coveralls": "^3.1.0",
+    "del-cli": "^3.0.0",
+    "mocha": "^8.2.1",
     "np": "*",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
-    "telegraf": "^4.4.0"
+    "telegraf": "^4.0.2",
+    "typescript": "^4.0.2",
+    "xo": "^0.37.1"
+  },
+  "main": "dist",
+  "types": "dist",
+  "nyc": {
+    "all": true,
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "dist",
+      "source"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/*.test.ts"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  },
+  "xo": {
+    "space": true,
+    "semicolon": false,
+    "rules": {
+      "@typescript-eslint/brace-style": "off",
+      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/no-this-alias": "off",
+      "@typescript-eslint/restrict-plus-operands": "off",
+      "@typescript-eslint/space-before-function-paren": "off",
+      "arrow-parens": "off",
+      "brace-style": "off",
+      "camelcase": "off",
+      "capitalized-comments": "off",
+      "comma-dangle": "off",
+      "curly": "off",
+      "eslint-comments/no-unused-disable": "warn",
+      "func-names": "off",
+      "max-statements-per-line": "off",
+      "new-cap": "off",
+      "no-else-return": "off",
+      "no-undef": "warn",
+      "no-unused-vars": "off",
+      "node/no-mixed-requires": "off",
+      "object-curly-spacing": "off",
+      "object-shorthand": "off",
+      "one-var": "off",
+      "padded-blocks": "off",
+      "padding-line-between-statements": "off",
+      "prefer-destructuring": "off",
+      "prefer-object-spread": "off",
+      "promise/prefer-await-to-then": "off",
+      "space-before-function-paren": "off",
+      "unicorn/empty-brace-spaces": "off",
+      "unicorn/error-message": "off",
+      "unicorn/filename-case": "off",
+      "prefer-rest-params": "off",
+      "no-promise-executor-return": "off",
+      "unicorn/prevent-abbreviations": "off"
+    }
   },
   "np": {
     "yarn": false

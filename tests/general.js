@@ -1,7 +1,7 @@
 /* eslint object-curly-spacing: ["error", "always"] */
 const
   { Telegraf } = require('telegraf'),
-  LocalSession = require('../lib/session'),
+  { LocalSession } = require('../dist'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
   options = { storage: LocalSession.storageMemory }
@@ -32,10 +32,8 @@ describe('Telegraf Session local : General', () => {
       storage: LocalSession.storageFileSync,
       format: {
         // By default lowdb uses pretty-printed JSON string: JSON.stringify(obj, null, 2)
-        // We will override that behaviour calling it `oneline`, making one-lined JSON string
-        serialize: function oneline (obj) {
-          return JSON.stringify(obj)
-        },
+        // We will override that behaviour making one-lined JSON string
+        serialize: obj => JSON.stringify(obj),
         deserialize: JSON.parse
       }
     })
@@ -106,7 +104,7 @@ describe('Telegraf Session local : General', () => {
   })
 
   it('Should detect if object is Promise/like or not', (done) => {
-    const isPromise = require('../lib/session').isPromise
+    const isPromise = require('is-promise')
     function notPromise () { return null }
     function promise () { return new Promise((resolve, reject) => resolve(null)) }
     function promiseLike () { return { then: cb => cb(null) } }
