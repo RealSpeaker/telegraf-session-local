@@ -1,0 +1,16 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: friday
+    time: "18:00"
+    timezone: Europe/Moscow
+  open-pull-requests-limit: 30
+  assignees:
+  - TemaSM
+  labels:
+  - "Type: Maintenance"
+  - dependencies
+  versioning-strategy: increase
