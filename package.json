@@ -45,7 +45,7 @@
     "release": "npx np"
   },
   "dependencies": {
-    "@types/lowdb": "^1.0.9",
+    "@types/lowdb": "^1.0.10",
     "lowdb": "^1.0.0"
   },
   "peerDependencies": {
