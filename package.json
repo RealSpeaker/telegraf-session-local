@@ -39,7 +39,7 @@
   "scripts": {
     "lint": "npx eslint . --fix",
     "test": "npx nyc mocha tests --require should",
-    "coverage": "npx nyc report --reporter=text-lcov | coveralls",
+    "coverage": "npx nyc report --reporter=lcovonly",
     "jsdoc": "npx jsdoc -c jsdoc.json",
     "version": "npm run jsdoc && git add docs",
     "release": "npx np"
@@ -53,7 +53,6 @@
     "telegraf": "^3.38.0 || ^4.0.0"
   },
   "devDependencies": {
-    "coveralls": "^3.1.0",
     "docdash": "^1.2.0",
     "eslint": "^7.28.0",
     "eslint-config-standard": "^16.0.3",

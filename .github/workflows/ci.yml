@@ -1,0 +1,58 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+    name: Node.js ${{ matrix.node-version }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Cache Node.js modules (pnpm)
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pnpm-modules
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.OS }}-${{ env.cache-name }}-node-${{ matrix.node-version }}-
+          restore-keys: |
+            ${{ runner.OS }}-${{ env.cache-name }}-node-${{ matrix.node-version }}-
+
+      # pnpm much faster and better than npm & yarn, check it out: https://pnpm.io/
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.7.2
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # Here we will use pnpx to run executables, instead of running `npm run <script>` which utilizes npx
+      - name: Run tests
+        run: |
+          pnpx nyc mocha tests --require should
+          pnpx nyc report --reporter=lcovonly
+        timeout-minutes: 5
+
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+  coverage:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
