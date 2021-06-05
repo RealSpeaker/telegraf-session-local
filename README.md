@@ -1,11 +1,11 @@
 # [Telegraf](https://github.com/telegraf/telegraf) Session local
 
 [![NPM Version](https://img.shields.io/npm/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
-[![node](https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
+[![Nodejs](https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
 [![npm](https://img.shields.io/npm/dm/telegraf-session-local.svg?style=flat-square)](https://npmcharts.com/compare/telegraf-session-local,telegraf-session-redis,telegraf-session-mysql,telegraf-session-mongo,telegraf-session-dynamodb?interval=30)
-[![Travis (.org) branch](https://img.shields.io/travis/RealSpeaker/telegraf-session-local/master.svg?style=flat-square)](https://travis-ci.org/RealSpeaker/telegraf-session-local)
-[![Coveralls github branch](https://img.shields.io/coveralls/github/RealSpeaker/telegraf-session-local/master.svg?style=flat-square)](https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master)
-[![Codacy branch grade](https://img.shields.io/codacy/grade/761ed505ba2d44bd9a2bc598e68969e3/master.svg?style=flat-square)](https://app.codacy.com/project/RealSpeaker/telegraf-session-local/dashboard)
+[![GitHub Actions Status](https://img.shields.io/github/workflow/status/RealSpeaker/telegraf-session-local/CI?style=flat-square)](https://github.com/RealSpeaker/telegraf-session-local/actions)
+[![Coveralls](https://img.shields.io/coveralls/github/RealSpeaker/telegraf-session-local/master.svg?style=flat-square)](https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master)
+[![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/g/RealSpeaker/telegraf-session-local.svg?style=flat-square&?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RealSpeaker/telegraf-session-local/context:javascript)
 [![David](https://img.shields.io/david/RealSpeaker/telegraf-session-local.svg?style=flat-square)](https://david-dm.org/RealSpeaker/telegraf-session-local)
 
 > Middleware for locally stored sessions & database
