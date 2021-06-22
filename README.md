@@ -22,15 +22,18 @@
 ## 🚀 Installation
 
 ```js
-$ npm install telegraf-session-local -S
+$ npm install -S telegraf-session-local
 ```
 
-### [Documentation & API](http://realspeaker.github.io/telegraf-session-local/)
-
+> 💡 TIP: We recommend [`pnpm` package manager](https://pnpm.io/?from=https://github.com/RealSpeaker/telegraf-session-local/): `npm i -g pnpm` and then `pnpm i -S telegraf-session-local`.  
+> It's in-place replacement for `npm`, [faster and better](https://pnpm.io/benchmarks) than `npm`/`yarn`, and [saves your disk space](https://pnpm.io/motivation#saving-disk-space-and-boosting-installation-speed).
+---
+### 📚 [Documentation & API](http://realspeaker.github.io/telegraf-session-local/)
+---
 ## 👀 Quick-start example
 
 ```js
-const {Telegraf} = require('telegraf')
+const { Telegraf } = require('telegraf')
 const LocalSession = require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
@@ -57,10 +60,10 @@ bot.command('/remove', (ctx) => {
 bot.launch()
 ```
 
-## 💡 Full example
+## 📄 Full example
 
 ```js
-const {Telegraf} = require('telegraf')
+const { Telegraf } = require('telegraf')
 const LocalSession = require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
@@ -91,13 +94,13 @@ localSession.DB.then(DB => {
   // console.log(DB.get('sessions').getById('1:1').value())
 })
 
-// Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` name
+// Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` value: `data`, instead of `session`
 bot.use(localSession.middleware(property))
 
 bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
-  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx[property].counter}\``)
   // Writing message to Array `messages` into database which already has sessions Array
   ctx[property + 'DB'].get('messages').push([ctx.message]).write()
   // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`

@@ -29,13 +29,13 @@ localSession.DB.then(DB => {
   // console.log(DB.get('sessions').getById('1:1').value())
 })
 
-// Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` name
+// Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` value: `data`, instead of `session`
 bot.use(localSession.middleware(property))
 
 bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
-  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx[property].counter}\``)
   // Writing message to Array `messages` into database which already has sessions Array
   ctx[property + 'DB'].get('messages').push([ctx.message]).write()
   // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`
