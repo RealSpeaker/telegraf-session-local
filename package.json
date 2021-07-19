@@ -1,7 +1,7 @@
 {
   "name": "telegraf-session-local",
   "version": "2.1.0",
-  "description": "Telegraf local sessions middleware with multiple supported storage types (Memory/FileSync/FileAsync/...) using lowdb",
+  "description": "Telegraf local sessions middleware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RealSpeaker/telegraf-session-local.git"
@@ -16,9 +16,7 @@
     "middleware",
     "database",
     "local database",
-    "json",
-    "lowdb",
-    "db"
+    "json"
   ],
   "author": "Tema Smirnov <npm.tema@smirnov.one>",
   "license": "MIT",
@@ -29,9 +27,6 @@
     "url": "https://github.com/RealSpeaker/telegraf-session-local/issues"
   },
   "homepage": "https://realspeaker.github.io/telegraf-session-local/",
-  "engines": {
-    "node": ">=12"
-  },
   "files": [
     "dist",
     "!*.test.*"
@@ -44,44 +39,38 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "release": "np"
   },
+  "type": "commonjs",
+  "engines": {
+    "node": ">=12"
+  },
   "dependencies": {
-    "@types/lowdb": "^1.0.9",
-    "is-promise": "^4.0.0",
-    "lodash-id": "^0.14.0",
-    "lowdb": "^1.0.0"
+    "debug": "^4.0.0",
+    "steno": "^1.0.0"
   },
   "peerDependencies": {
-    "debug": "^4.0.0",
     "telegraf": "^4.0.0"
   },
   "devDependencies": {
-    "@sindresorhus/tsconfig": "^0.8.0",
+    "@sindresorhus/tsconfig": "^1.0.2",
     "@types/debug": "^4.1.5",
     "@types/node": "^14.14.31",
     "coveralls": "^3.1.0",
-    "del-cli": "^3.0.0",
-    "mocha": "^8.2.1",
+    "del-cli": "^4.0.0",
+    "mocha": "^9.0.2",
     "np": "*",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
     "telegraf": "^4.0.2",
     "typescript": "^4.0.2",
-    "xo": "^0.37.1"
+    "xo": "^0.42.0"
   },
   "main": "dist",
   "types": "dist",
   "nyc": {
     "all": true,
-    "extension": [
-      ".ts"
-    ],
     "include": [
       "dist",
       "source"
-    ],
-    "exclude": [
-      "**/*.d.ts",
-      "**/*.test.ts"
     ],
     "reporter": [
       "lcov",
@@ -92,11 +81,8 @@
     "space": true,
     "semicolon": false,
     "rules": {
-      "@typescript-eslint/brace-style": "off",
-      "@typescript-eslint/no-empty-function": "off",
       "@typescript-eslint/no-this-alias": "off",
-      "@typescript-eslint/restrict-plus-operands": "off",
-      "@typescript-eslint/space-before-function-paren": "off",
+      "@typescript-eslint/no-unsafe-member-access": "off",
       "arrow-parens": "off",
       "brace-style": "off",
       "camelcase": "off",
@@ -105,9 +91,12 @@
       "curly": "off",
       "eslint-comments/no-unused-disable": "warn",
       "func-names": "off",
+      "import/extensions": "off",
+      "import/order": "off",
       "max-statements-per-line": "off",
       "new-cap": "off",
       "no-else-return": "off",
+      "no-promise-executor-return": "off",
       "no-undef": "warn",
       "no-unused-vars": "off",
       "node/no-mixed-requires": "off",
@@ -118,13 +107,15 @@
       "padding-line-between-statements": "off",
       "prefer-destructuring": "off",
       "prefer-object-spread": "off",
+      "prefer-rest-params": "off",
       "promise/prefer-await-to-then": "off",
       "space-before-function-paren": "off",
       "unicorn/empty-brace-spaces": "off",
       "unicorn/error-message": "off",
       "unicorn/filename-case": "off",
-      "prefer-rest-params": "off",
-      "no-promise-executor-return": "off",
+      "unicorn/no-this-assignment": "off",
+      "unicorn/prefer-module": "off",
+      "unicorn/prefer-node-protocol": "off",
       "unicorn/prevent-abbreviations": "off"
     }
   },

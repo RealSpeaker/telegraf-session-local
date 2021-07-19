@@ -12,12 +12,7 @@
 
 ### ⚡️ Features
 
-- Any type of storage: `Memory`, `FileSync`, `FileAsync`, ... (implement your own)
-- Any format you want: `JSON`, `BSON`, `YAML`, `XML`, ... (implement your own)
-- Shipped together with power of `lodash`
-- Supports basic DB-like operations (thanks to [lodash-id](https://github.com/typicode/lodash-id)):
-
-  `getById`, `insert`, `upsert`, `updateById`, `updateWhere`, `replaceById`, `removeById`, `removeWhere`, `createId`,
+… all gone?
 
 ## 🚀 Installation
 
@@ -25,7 +20,7 @@
 $ npm install -S telegraf-session-local
 ```
 
-> 💡 TIP: We recommend [`pnpm` package manager](https://pnpm.io/?from=https://github.com/RealSpeaker/telegraf-session-local/): `npm i -g pnpm` and then `pnpm i -S telegraf-session-local`.  
+> 💡 TIP: We recommend [`pnpm` package manager](https://pnpm.io/?from=https://github.com/RealSpeaker/telegraf-session-local/): `npm i -g pnpm` and then `pnpm i -S telegraf-session-local`.
 > It's in-place replacement for `npm`, [faster and better](https://pnpm.io/benchmarks) than `npm`/`yarn`, and [saves your disk space](https://pnpm.io/motivation#saving-disk-space-and-boosting-installation-speed).
 ---
 ### 📚 [Documentation & API](http://realspeaker.github.io/telegraf-session-local/)
@@ -76,22 +71,6 @@ const localSession = new LocalSession({
   database: 'example_db.json',
   // Name of session property object in Telegraf Context (default: 'session')
   property: 'session',
-  // Type of lowdb storage (default: 'storageFileSync')
-  storage: LocalSession.storageFileAsync,
-  // Format of storage/database (default: JSON.stringify / JSON.parse)
-  format: {
-    serialize: (obj) => JSON.stringify(obj, null, 2), // null & 2 for pretty-formatted JSON
-    deserialize: (str) => JSON.parse(str),
-  },
-  // We will use `messages` array in our database to store user messages using exported lowdb instance from LocalSession via Telegraf Context
-  state: { messages: [] }
-})
-
-// Wait for database async initialization finished (storageFileAsync or your own asynchronous storage adapter)
-localSession.DB.then(DB => {
-  // Database now initialized, so now you can retrieve anything you want from it
-  console.log('Current LocalSession DB:', DB.value())
-  // console.log(DB.get('sessions').getById('1:1').value())
 })
 
 // Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` value: `data`, instead of `session`
@@ -101,10 +80,6 @@ bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
   ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx[property].counter}\``)
-  // Writing message to Array `messages` into database which already has sessions Array
-  ctx[property + 'DB'].get('messages').push([ctx.message]).write()
-  // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`
-  // ctx.dataDB.get('messages').push([ctx.message]).write()
 
   return next()
 })

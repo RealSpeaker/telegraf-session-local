@@ -3,12 +3,11 @@ const
   { Telegraf } = require('telegraf'),
   { LocalSession } = require('../dist'),
   should = require('should'),
-  debug = require('debug')('telegraf:session-local:test'),
-  options = { storage: LocalSession.storageMemory }
+  debug = require('debug')('telegraf:session-local:test')
 
 describe('Telegraf Session local : General', () => {
   let bot = {}
-  const localSession = new LocalSession(options)
+  const localSession = new LocalSession()
 
   it('Should works without specifying any options for LocalSession', (done) => {
     bot = new Telegraf()
@@ -24,57 +23,12 @@ describe('Telegraf Session local : General', () => {
     }, 25)
   })
 
-  it('Should use custom `format.serialize` and `format.deserialize` functions', (done) => {
-    bot = new Telegraf()
-    bot.botInfo = {}
-    const session = new LocalSession({
-      database: 'test_sync_db.json',
-      storage: LocalSession.storageFileSync,
-      format: {
-        // By default lowdb uses pretty-printed JSON string: JSON.stringify(obj, null, 2)
-        // We will override that behaviour making one-lined JSON string
-        serialize: obj => JSON.stringify(obj),
-        deserialize: JSON.parse
-      }
-    })
-    bot.on('text', session.middleware(), (ctx) => {
-      should.exist(ctx.session)
-      ctx.session.wow = true
-      // ctx.session.should.have.property('wow')
-      // ctx.session.foo.should.be.equal(true)
-      done()
-    })
-    bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
-  })
-
-  it('Should have access to lowdb instance via ctx.sessionDB', (done) => {
-    bot = new Telegraf()
-    bot.botInfo = {}
-    bot.on('text', localSession.middleware(), (ctx) => {
-      debug('lowdb instance via `ctx.sessionDB` %o', ctx.sessionDB)
-      should.exist(ctx.sessionDB)
-      done()
-    })
-    bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
-  })
-
   it('Should override default `session` property to `data` at middleware() call', (done) => {
     bot = new Telegraf()
     bot.botInfo = {}
     bot.on('text', localSession.middleware('data'), (ctx) => {
       debug('Overrided session property %o', ctx.data)
       should.exist(ctx.data)
-      done()
-    })
-    bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
-  })
-
-  it('Should have access to lowdb instance via overrided property in ctx', (done) => {
-    bot = new Telegraf()
-    bot.botInfo = {}
-    bot.on('text', localSession.middleware('data'), (ctx) => {
-      debug('lowdb instance via `ctx.dataDB` %o', ctx.dataDB)
-      should.exist(ctx.dataDB)
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
@@ -97,7 +51,7 @@ describe('Telegraf Session local : General', () => {
     bot.on('text', localSession.middleware(), async (ctx) => {
       const sessionKey = localSession.getSessionKey(ctx)
       debug('Real session key calculated by LocalSession: %s', sessionKey)
-      should.not.exists(await localSession.saveSession(undefined, { authenticated: false }))
+      await localSession.saveSession(undefined, { authenticated: false })
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })

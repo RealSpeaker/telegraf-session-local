@@ -4,15 +4,10 @@ const
   { LocalSession } = require('../dist'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
-  options = { database: 'test_async_db.json', storage: LocalSession.storageFileAsync }
+  options = { database: 'test_async_db.json' }
 
 let bot = {}
 const localSession = new LocalSession(options)
-
-// Wait for database async initialization finished
-before((done) => {
-  localSession.DB.then((DB) => { done() })
-})
 
 describe('Telegraf Session local : storageFileAsync', () => {
 
@@ -22,10 +17,7 @@ describe('Telegraf Session local : storageFileAsync', () => {
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42
-    const _session = await localSession.saveSession(key, session)
-    debug('Saved session %O', _session)
-    should.exist(_session)
-    _session.data.should.be.deepEqual({ foo: 42 })
+    await localSession.saveSession(key, session)
   })
 
   it('storageFileAsync: Should has session', (done) => {
@@ -78,24 +70,5 @@ describe('Telegraf Session local : storageFileAsync', () => {
       done()
     })
     bot.handleUpdate({ message: { chat: { id: 1 }, from: { id: 1 }, text: 'hey' } })
-  })
-
-  it('storageFileAsync: Should work properly with deprecated stoarge name - storagefileAsync', (done) => {
-    const _options = Object.assign({ storage: LocalSession.storagefileAsync }, options)
-    const _localSession = new LocalSession(_options)
-    // Wait for database async initialization finished
-    _localSession.DB.then(async (DB) => {
-      // console.log(DB.get('sessions').getById('1:1').value())
-      const key = '1:1' // ChatID:FromID
-      const session = _localSession.getSession(key)
-      debug('getSession %O', session)
-      should.exist(session)
-      session.foo = 42
-      const _session = await _localSession.saveSession(key, session)
-      debug('Saved session %O', _session)
-      should.exist(_session)
-      _session.data.should.be.deepEqual({ foo: 42 })
-      done()
-    })
   })
 })

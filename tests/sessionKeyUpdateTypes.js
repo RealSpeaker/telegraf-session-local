@@ -3,12 +3,11 @@ const
   { Telegraf } = require('telegraf'),
   { LocalSession } = require('../dist'),
   should = require('should'),
-  debug = require('debug')('telegraf:session-local:test'),
-  options = { storage: LocalSession.storageMemory }
+  debug = require('debug')('telegraf:session-local:test')
 
 describe('Telegraf Session local : Session Key Update Types', () => {
   let bot = {}
-  const localSession = new LocalSession(options)
+  const localSession = new LocalSession()
 
   it('Should handle message', (done) => {
     bot = new Telegraf()
