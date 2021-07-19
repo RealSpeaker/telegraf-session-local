@@ -29,7 +29,7 @@
   },
   "homepage": "https://realspeaker.github.io/telegraf-session-local/",
   "files": [
-    "dist",
+    "dist/source",
     "!*.test.*"
   ],
   "scripts": {
@@ -64,8 +64,8 @@
     "typescript": "^4.0.2",
     "xo": "^0.42.0"
   },
-  "main": "dist",
-  "types": "dist",
+  "main": "dist/source",
+  "types": "dist/source",
   "nyc": {
     "all": true,
     "include": [
