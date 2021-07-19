@@ -35,7 +35,7 @@
     "build": "del-cli dist && tsc",
     "prepack": "npm run build",
     "lint": "xo",
-    "test": "tsc --sourceMap && xo && nyc mocha tests --require should",
+    "test": "tsc --sourceMap && xo && nyc mocha dist/tests --require should",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "release": "np"
   },
@@ -53,6 +53,7 @@
   "devDependencies": {
     "@sindresorhus/tsconfig": "^1.0.2",
     "@types/debug": "^4.1.5",
+    "@types/mocha": "^8.2.3",
     "@types/node": "^14.14.31",
     "coveralls": "^3.1.0",
     "del-cli": "^4.0.0",
@@ -97,7 +98,6 @@
       "new-cap": "off",
       "no-else-return": "off",
       "no-promise-executor-return": "off",
-      "no-undef": "warn",
       "no-unused-vars": "off",
       "node/no-mixed-requires": "off",
       "object-curly-spacing": "off",
@@ -117,7 +117,21 @@
       "unicorn/prefer-module": "off",
       "unicorn/prefer-node-protocol": "off",
       "unicorn/prevent-abbreviations": "off"
-    }
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.test.*",
+          "tests/**/*.*"
+        ],
+        "rules": {
+          "@typescript-eslint/no-floating-promises": "off",
+          "@typescript-eslint/no-unsafe-call": "off",
+          "@typescript-eslint/prefer-readonly-parameter-types": "off",
+          "no-undef": "off"
+        }
+      }
+    ]
   },
   "np": {
     "yarn": false

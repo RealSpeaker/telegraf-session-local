@@ -28,28 +28,22 @@ $ npm install -S telegraf-session-local
 ## 👀 Quick-start example
 
 ```js
-const { Telegraf } = require('telegraf')
-const LocalSession = require('telegraf-session-local')
+import {Telegraf} from 'telegraf'
+import {LocalSession} from 'telegraf-session-local'
 
-const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
+const bot = new Telegraf(process.env['BOT_TOKEN']!) // Your Bot token here
 
-bot.use((new LocalSession({ database: 'example_db.json' })).middleware())
+bot.use((new LocalSession({database: 'example_db.json'})).middleware())
 
-bot.on('text', (ctx, next) => {
-  ctx.session.counter = ctx.session.counter || 0
+bot.on('text', async (ctx, next) => {
+  ctx.session.counter = ctx.session.counter ?? 0
   ctx.session.counter++
-  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
+  await ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   return next()
 })
 
-bot.command('/stats', (ctx) => {
-  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username || ctx.from.id}`)
-})
-
-bot.command('/remove', (ctx) => {
-  ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.session)}\``)
-  // Setting session to null, undefined or empty object/array will trigger removing it from database
-  ctx.session = null
+bot.command('/stats', async (ctx) => {
+  await ctx.replyWithMarkdown(`Database has \`${String(ctx.session.counter)}\` messages from @${ctx.from.username ?? ctx.from.id}`)
 })
 
 bot.launch()
@@ -57,42 +51,46 @@ bot.launch()
 
 ## 📄 Full example
 
-```js
-const { Telegraf } = require('telegraf')
-const LocalSession = require('telegraf-session-local')
+```ts
+import {Telegraf, Context as TelegrafContext} from 'telegraf'
+import {LocalSession} from 'telegraf-session-local'
 
-const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
+interface Session {
+  counter?: number;
+}
 
-// Name of session property object in Telegraf Context (default: 'session')
-const property = 'data'
+interface MyContext extends TelegrafContext {
+  data: Session;
+}
 
-const localSession = new LocalSession({
+const bot = new Telegraf<MyContext>(process.env['BOT_TOKEN']!) // Your Bot token here
+
+const localSession = new LocalSession<MyContext, Session>({
   // Database name/path, where sessions will be located (default: 'sessions.json')
   database: 'example_db.json',
   // Name of session property object in Telegraf Context (default: 'session')
-  property: 'session',
+  property: 'data',
 })
 
 // Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` value: `data`, instead of `session`
-bot.use(localSession.middleware(property))
+bot.use(localSession.middleware())
 
-bot.on('text', (ctx, next) => {
-  ctx[property].counter = ctx[property].counter || 0
-  ctx[property].counter++
-  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx[property].counter}\``)
-
+bot.on('text', async (ctx, next) => {
+  ctx.data.counter = ctx.data.counter ?? 0
+  ctx.data.counter++
+  await ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.data.counter}\``)
   return next()
 })
 
-bot.command('/stats', (ctx) => {
-  let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
-  msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username || ctx.from.id}`
-  ctx.replyWithMarkdown(msg)
+bot.command('/stats', async (ctx) => {
+  let msg = 'Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (`ctx`), named `data`\n'
+  msg += `Database has \`${String(ctx.data.counter)}\` messages from @${ctx.from.username ?? ctx.from.id}`
+  await ctx.replyWithMarkdown(msg)
 })
-bot.command('/remove', (ctx) => {
-  ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
+bot.command('/remove', async (ctx) => {
+  await ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.data)}\``);
   // Setting session to null, undefined or empty object/array will trigger removing it from database
-  ctx[property] = null
+  (ctx as any).data = null
 })
 
 bot.launch()

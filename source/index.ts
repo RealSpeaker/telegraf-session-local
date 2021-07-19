@@ -41,7 +41,8 @@ const debug = Debug('telegraf:session-local')
 /**
  * Represents a wrapper around locally stored session
  */
-export class LocalSession<TContext, TSession extends Record<keyof any, unknown>> {
+// eslint-disable-next-line @typescript-eslint/ban-types
+export class LocalSession<TContext, TSession extends {}> {
   private readonly options: LocalSessionOptions<TContext, TSession>
   private readonly writer: Writer
 
@@ -128,7 +129,9 @@ export class LocalSession<TContext, TSession extends Record<keyof any, unknown>>
    */
   async saveSession(key: string, data: TSession) {
     this._called(key, data)
-    if (!key) return
+    if (!key) {
+      throw new Error('key has to be defined')
+    }
 
     const sessions = await this.getAllSessions()
     const index = sessions.findIndex(o => o.id === key)
@@ -154,21 +157,22 @@ export class LocalSession<TContext, TSession extends Record<keyof any, unknown>>
 
   /**
    * Session middleware for use in Telegraf
-   *
-   * @param property - Name of property in {@link https://telegraf.js.org/#/?id=context|Telegraf Context} where session object will be located (overrides `property` at {@link LocalSession} constructor)
    */
-  middleware(property = this.options.property): (ctx: TContext, next: () => Promise<void>) => Promise<void> {
+  middleware(): (ctx: TContext, next: () => Promise<void>) => Promise<void> {
     const that = this
     return async (ctx, next) => {
       const key = that.getSessionKey(ctx)
       if (!key) return next()
       debug('Session key: %s', key)
       let session = await that.getSession(key)
-      debug('Session data: %o', session);
+      debug('Session data: %o', session)
       // Assigning session object to the Telegraf Context using `property` as a variable name
-      Object.defineProperty(ctx, property, {
+      Object.defineProperty(ctx, this.options.property, {
         get: () => session,
-        set: (newValue) => { session = Object.assign({}, newValue) }
+        set: (newValue) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+          session = Object.assign({}, newValue)
+        },
       })
 
       await next()
