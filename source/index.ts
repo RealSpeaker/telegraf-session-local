@@ -1,6 +1,5 @@
 import {readFile} from 'fs/promises'
 
-import {Context as TelegrafContext} from 'telegraf'
 import {Writer} from 'steno'
 import debugPackage from 'debug'
 
@@ -13,6 +12,18 @@ interface SessionEntry<Data> {
 
 interface FileContent<Data> {
   readonly sessions: Array<SessionEntry<Data>>;
+}
+
+interface MinimalContext {
+  readonly from?: {
+    readonly id: number;
+  };
+  readonly chat?: {
+    readonly id: number;
+  };
+  readonly callbackQuery?: {
+    readonly chat_instance?: string;
+  };
 }
 
 export interface LocalSessionOptions<TContext, TSession> {
@@ -42,7 +53,7 @@ export interface LocalSessionOptions<TContext, TSession> {
  * Represents a wrapper around locally stored session
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
-export class LocalSession<TContext, TSession extends {}> {
+export class LocalSession<TContext extends MinimalContext, TSession extends {}> {
   private readonly options: LocalSessionOptions<TContext, TSession>
   private readonly writer: Writer
 
@@ -60,20 +71,15 @@ export class LocalSession<TContext, TSession extends {}> {
       database: 'sessions.json',
       property: 'session',
       state: {},
-      getSessionKey: (ctx: TelegrafContext) => {
+      getSessionKey: (ctx: TContext) => {
         if (!ctx.from) {
           // Should never happen
           return undefined
         }
 
-        let chatInstance: number | string
-        if (ctx.chat) {
-          chatInstance = ctx.chat.id
-        } else if (ctx.callbackQuery) {
-          chatInstance = ctx.callbackQuery.chat_instance
-        } else { // Probably: if (ctx.updateType === 'inline_query') {
-          chatInstance = ctx.from.id
-        }
+        const chatInstance = ctx.chat?.id
+          ?? ctx.callbackQuery?.chat_instance
+          ?? ctx.from.id
 
         return `${chatInstance}:${ctx.from.id}`
       },
