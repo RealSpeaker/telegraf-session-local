@@ -1,5 +1,5 @@
 import {Telegraf, Context as TelegrafContext} from 'telegraf'
-import {LocalSession} from '../source' // from 'telegraf-session-local'
+import {LocalSession} from '../source' // 'telegraf-session-local'
 
 interface Session {
   counter?: number;
@@ -20,7 +20,7 @@ bot.on('text', async (ctx, next) => {
   return next()
 })
 
-bot.command('/stats', async (ctx) => {
+bot.command('/stats', async ctx => {
   await ctx.replyWithMarkdown(`Database has \`${String(ctx.session.counter)}\` messages from @${ctx.from.username ?? ctx.from.id}`)
 })
 

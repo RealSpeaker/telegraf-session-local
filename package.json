@@ -82,43 +82,18 @@
     "space": true,
     "semicolon": false,
     "rules": {
-      "@typescript-eslint/no-this-alias": "off",
-      "@typescript-eslint/no-unsafe-member-access": "off",
-      "arrow-parens": "off",
-      "brace-style": "off",
-      "camelcase": "off",
-      "capitalized-comments": "off",
-      "comma-dangle": "off",
-      "curly": "off",
-      "eslint-comments/no-unused-disable": "warn",
-      "func-names": "off",
-      "import/extensions": "off",
-      "import/order": "off",
-      "max-statements-per-line": "off",
-      "new-cap": "off",
-      "no-else-return": "off",
-      "no-promise-executor-return": "off",
-      "no-unused-vars": "off",
-      "node/no-mixed-requires": "off",
-      "object-curly-spacing": "off",
-      "object-shorthand": "off",
-      "one-var": "off",
-      "padded-blocks": "off",
-      "padding-line-between-statements": "off",
-      "prefer-destructuring": "off",
-      "prefer-object-spread": "off",
-      "prefer-rest-params": "off",
-      "promise/prefer-await-to-then": "off",
-      "space-before-function-paren": "off",
-      "unicorn/empty-brace-spaces": "off",
-      "unicorn/error-message": "off",
-      "unicorn/filename-case": "off",
-      "unicorn/no-this-assignment": "off",
-      "unicorn/prefer-module": "off",
-      "unicorn/prefer-node-protocol": "off",
-      "unicorn/prevent-abbreviations": "off"
+      "@typescript-eslint/prefer-readonly-parameter-types": "warn",
+      "unicorn/prefer-node-protocol": "off"
     },
     "overrides": [
+      {
+        "files": [
+          "examples/**/*.*"
+        ],
+        "rules": {
+          "@typescript-eslint/prefer-readonly-parameter-types": "off"
+        }
+      },
       {
         "files": [
           "**/*.test.*",
@@ -126,7 +101,7 @@
         ],
         "rules": {
           "@typescript-eslint/no-floating-promises": "off",
-          "@typescript-eslint/no-unsafe-call": "off",
+          "@typescript-eslint/no-unsafe-member-access": "off",
           "@typescript-eslint/prefer-readonly-parameter-types": "off",
           "no-undef": "off"
         }

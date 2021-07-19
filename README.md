@@ -90,7 +90,7 @@ bot.command('/stats', async (ctx) => {
 bot.command('/remove', async (ctx) => {
   await ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.data)}\``);
   // Setting session to null, undefined or empty object/array will trigger removing it from database
-  (ctx as any).data = null
+  ctx.data = null
 })
 
 bot.launch()

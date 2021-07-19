@@ -1,7 +1,8 @@
 import {Telegraf, Context as TelegrafContext} from 'telegraf'
-import {LocalSession} from '../source'
 import * as should from 'should'
 import * as debugPackage from 'debug'
+
+import {LocalSession} from '../source'
 
 const debug = debugPackage('telegraf:session-local:test')
 
@@ -15,9 +16,8 @@ type MyContext = TelegrafContext & ContextExtension
 
 const localSession = new LocalSession<MyContext, Session>({database: 'test_async_db.json'})
 
-describe('Telegraf Session local : storageFileAsync', () => {
-
-  it('storageFileAsync: Should retrieve and save session', async () => {
+describe('Telegraf Session local : file handling', () => {
+  it('Should retrieve and save session', async () => {
     const key = '1:1' // ChatID:FromID
     const session = await localSession.getSession(key)
     debug('getSession %O', session)
@@ -26,10 +26,10 @@ describe('Telegraf Session local : storageFileAsync', () => {
     await localSession.saveSession(key, session)
   })
 
-  it('storageFileAsync: Should has session', (done) => {
+  it('Should has session', done => {
     const bot = new Telegraf<MyContext>('123:ABC');
     (bot as any).botInfo = {}
-    bot.on('text', localSession.middleware(), (ctx) => {
+    bot.on('text', localSession.middleware(), ctx => {
       debug('Middleware session %O', ctx.session)
       should.exist(ctx.session)
       ctx.session.foo = 42
@@ -39,10 +39,10 @@ describe('Telegraf Session local : storageFileAsync', () => {
     bot.handleUpdate({message: {chat: {id: 1}, from: {id: 1}, text: 'hey'}} as any)
   })
 
-  it('storageFileAsync: Should handle existing session', (done) => {
+  it('Should handle existing session', done => {
     const bot = new Telegraf<MyContext>('123:ABC');
     (bot as any).botInfo = {}
-    bot.on('text', localSession.middleware(), (ctx) => {
+    bot.on('text', localSession.middleware(), ctx => {
       debug('Existing Middleware session %O', ctx.session)
       should.exist(ctx.session)
       ctx.session.should.have.property('foo')
@@ -52,10 +52,10 @@ describe('Telegraf Session local : storageFileAsync', () => {
     bot.handleUpdate({message: {chat: {id: 1}, from: {id: 1}, text: 'hey'}} as any)
   })
 
-  it('storageFileAsync: Should handle not existing session', (done) => {
+  it('Should handle not existing session', done => {
     const bot = new Telegraf<MyContext>('123:ABC');
     (bot as any).botInfo = {}
-    bot.on('text', localSession.middleware(), (ctx) => {
+    bot.on('text', localSession.middleware(), ctx => {
       debug('Not Existing Middleware session %O', ctx.session)
       should.exist(ctx.session)
       ctx.session.should.not.have.property('foo')
@@ -64,10 +64,10 @@ describe('Telegraf Session local : storageFileAsync', () => {
     bot.handleUpdate({message: {chat: {id: 1337}, from: {id: 1337}, text: 'hey'}} as any)
   })
 
-  it('storageFileAsync: Should handle session reset', (done) => {
+  it('Should handle session reset', done => {
     const bot = new Telegraf<MyContext>('123:ABC');
     (bot as any).botInfo = {}
-    bot.on('text', localSession.middleware(), (ctx) => {
+    bot.on('text', localSession.middleware(), ctx => {
       debug('Middleware session reset - before %O', ctx.session);
       (ctx as any).session = null
       should.exist(ctx.session)

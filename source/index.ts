@@ -2,41 +2,41 @@ import {readFile} from 'fs/promises'
 
 import {Context as TelegrafContext} from 'telegraf'
 import {Writer} from 'steno'
-import Debug from 'debug'
+import debugPackage from 'debug'
+
+const debug = debugPackage('telegraf:session-local')
 
 interface SessionEntry<Data> {
   readonly id: string;
-  data: Data;
+  readonly data: Data;
 }
 
 interface FileContent<Data> {
-  sessions: Array<SessionEntry<Data>>;
+  readonly sessions: Array<SessionEntry<Data>>;
 }
 
 export interface LocalSessionOptions<TContext, TSession> {
   /**
    * Name or path to database file `default:` `'sessions.json'`
    */
-  database: string;
+  readonly database: string;
 
   /**
    * Name of property in {@link https://telegraf.js.org/#/?id=context|Telegraf Context} where session object will be located `default:` `'session'`
    */
-  property: string;
+  readonly property: string;
 
   /**
    * Initial state of database. You can use it to pre-init database Arrays/Objects to store your own data `default:` `{}`
    */
-  state: TSession;
+  readonly state: TSession;
 
   /**
    * Function to get identifier for session from {@link https://telegraf.js.org/#/?id=context|Telegraf Context} (may implement it on your own)
    * When it returns undefined or an empty string no session is loaded.
    */
-  getSessionKey: (ctx: TContext) => string | undefined;
+  readonly getSessionKey: (ctx: TContext) => string | undefined;
 }
-
-const debug = Debug('telegraf:session-local')
 
 /**
  * Represents a wrapper around locally stored session
@@ -55,21 +55,26 @@ export class LocalSession<TContext, TSession extends {}> {
       throw new TypeError('options.format no longer exists')
     }
 
+    // eslint-disable-next-line prefer-object-spread
     this.options = Object.assign({
       database: 'sessions.json',
       property: 'session',
-      state: { },
+      state: {},
       getSessionKey: (ctx: TelegrafContext) => {
-        if (!ctx.from) return // should never happen
+        if (!ctx.from) {
+          // Should never happen
+          return undefined
+        }
 
         let chatInstance: number | string
         if (ctx.chat) {
           chatInstance = ctx.chat.id
         } else if (ctx.callbackQuery) {
           chatInstance = ctx.callbackQuery.chat_instance
-        } else { // if (ctx.updateType === 'inline_query') {
+        } else { // Probably: if (ctx.updateType === 'inline_query') {
           chatInstance = ctx.from.id
         }
+
         return `${chatInstance}:${ctx.from.id}`
       },
     }, options)
@@ -142,12 +147,12 @@ export class LocalSession<TContext, TSession extends {}> {
       sessions.splice(index)
     } else if (index < 0) {
       debug('Saving session: %s = %o', key, data)
-      debug(' -> Updating')
+      debug(' -> Inserting')
       sessions.push({id: key, data})
     } else {
       debug('Saving session: %s = %o', key, data)
-      debug(' -> Inserting')
-      sessions[index]!.data = data
+      debug(' -> Updating')
+      sessions[index] = {id: key, data}
     }
 
     const fileContent: FileContent<TSession> = {sessions}
@@ -159,19 +164,23 @@ export class LocalSession<TContext, TSession extends {}> {
    * Session middleware for use in Telegraf
    */
   middleware(): (ctx: TContext, next: () => Promise<void>) => Promise<void> {
+    // eslint-disable-next-line unicorn/no-this-assignment, @typescript-eslint/no-this-alias
     const that = this
     return async (ctx, next) => {
       const key = that.getSessionKey(ctx)
-      if (!key) return next()
+      if (!key) {
+        return next()
+      }
+
       debug('Session key: %s', key)
       let session = await that.getSession(key)
       debug('Session data: %o', session)
       // Assigning session object to the Telegraf Context using `property` as a variable name
       Object.defineProperty(ctx, this.options.property, {
         get: () => session,
-        set: (newValue) => {
+        set: newValue => {
           // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          session = Object.assign({}, newValue)
+          session = {...newValue}
         },
       })
 
@@ -190,7 +199,8 @@ export class LocalSession<TContext, TSession extends {}> {
    * @param args - Called function's arguments
    * @private
    */
-  private _called(...args: unknown[]) {
+  private _called(...args: readonly unknown[]) {
+    // eslint-disable-next-line unicorn/error-message
     debug('Called function: \n\t-> %s \n\t-> Arguments: \n\t-> %o', ((new Error().stack)?.split('at ')[2])?.trim(), args)
   }
 }

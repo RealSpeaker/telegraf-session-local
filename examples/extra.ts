@@ -1,5 +1,5 @@
 import {Telegraf, Context as TelegrafContext} from 'telegraf'
-import {LocalSession} from '../source' // from 'telegraf-session-local'
+import {LocalSession} from '../source' // 'telegraf-session-local'
 
 interface Session {
   counter?: number;
@@ -28,15 +28,16 @@ bot.on('text', async (ctx, next) => {
   return next()
 })
 
-bot.command('/stats', async (ctx) => {
-  let msg = 'Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (`ctx`), named `data`\n'
-  msg += `Database has \`${String(ctx.data.counter)}\` messages from @${ctx.from.username ?? ctx.from.id}`
-  await ctx.replyWithMarkdown(msg)
+bot.command('/stats', async ctx => {
+  let message = 'Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (`ctx`), named `data`\n'
+  message += `Database has \`${String(ctx.data.counter)}\` messages from @${ctx.from.username ?? ctx.from.id}`
+  await ctx.replyWithMarkdown(message)
 })
-bot.command('/remove', async (ctx) => {
-  await ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.data)}\``);
+bot.command('/remove', async ctx => {
+  await ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.data)}\``)
   // Setting session to null, undefined or empty object/array will trigger removing it from database
-  (ctx as any).data = null
+  // @ts-expect-error
+  ctx.data = null
 })
 
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
