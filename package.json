@@ -39,7 +39,7 @@
   "scripts": {
     "lint": "npx eslint . --fix",
     "test": "npx nyc mocha tests --require should",
-    "coverage": "npx nyc report --reporter=text-lcov | coveralls",
+    "coverage": "npx nyc report --reporter=lcovonly",
     "jsdoc": "npx jsdoc -c jsdoc.json",
     "version": "npm run jsdoc && git add docs",
     "release": "npx np"
@@ -53,20 +53,19 @@
     "telegraf": "^3.38.0 || ^4.0.0"
   },
   "devDependencies": {
-    "coveralls": "^3.1.0",
     "docdash": "^1.2.0",
-    "eslint": "^7.24.0",
-    "eslint-config-standard": "^16.0.2",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-mocha": "^8.1.0",
+    "eslint": "^7.30.0",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-mocha": "^9.0.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.3.1",
-    "jsdoc": "^3.6.6",
-    "mocha": "^8.3.2",
+    "eslint-plugin-promise": "^5.1.0",
+    "jsdoc": "^3.6.7",
+    "mocha": "^9.0.2",
     "np": "*",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
-    "telegraf": "^4.3.0"
+    "telegraf": "^4.4.0"
   },
   "np": {
     "yarn": false

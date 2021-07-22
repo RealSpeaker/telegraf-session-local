@@ -1,11 +1,11 @@
 # [Telegraf](https://github.com/telegraf/telegraf) Session local
 
 [![NPM Version](https://img.shields.io/npm/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
-[![node](https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
+[![Nodejs](https://img.shields.io/node/v/telegraf-session-local.svg?style=flat-square)](https://www.npmjs.com/package/telegraf-session-local)
 [![npm](https://img.shields.io/npm/dm/telegraf-session-local.svg?style=flat-square)](https://npmcharts.com/compare/telegraf-session-local,telegraf-session-redis,telegraf-session-mysql,telegraf-session-mongo,telegraf-session-dynamodb?interval=30)
-[![Travis (.org) branch](https://img.shields.io/travis/RealSpeaker/telegraf-session-local/master.svg?style=flat-square)](https://travis-ci.org/RealSpeaker/telegraf-session-local)
-[![Coveralls github branch](https://img.shields.io/coveralls/github/RealSpeaker/telegraf-session-local/master.svg?style=flat-square)](https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master)
-[![Codacy branch grade](https://img.shields.io/codacy/grade/761ed505ba2d44bd9a2bc598e68969e3/master.svg?style=flat-square)](https://app.codacy.com/project/RealSpeaker/telegraf-session-local/dashboard)
+[![GitHub Actions Status](https://img.shields.io/github/workflow/status/RealSpeaker/telegraf-session-local/CI?style=flat-square)](https://github.com/RealSpeaker/telegraf-session-local/actions)
+[![Coveralls](https://img.shields.io/coveralls/github/RealSpeaker/telegraf-session-local/master.svg?style=flat-square)](https://coveralls.io/github/RealSpeaker/telegraf-session-local?branch=master)
+[![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/g/RealSpeaker/telegraf-session-local.svg?style=flat-square&?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RealSpeaker/telegraf-session-local/context:javascript)
 [![David](https://img.shields.io/david/RealSpeaker/telegraf-session-local.svg?style=flat-square)](https://david-dm.org/RealSpeaker/telegraf-session-local)
 
 > Middleware for locally stored sessions & database
@@ -22,15 +22,18 @@
 ## 🚀 Installation
 
 ```js
-$ npm install telegraf-session-local -S
+$ npm install -S telegraf-session-local
 ```
 
-### [Documentation & API](http://realspeaker.github.io/telegraf-session-local/)
-
+> 💡 TIP: We recommend [`pnpm` package manager](https://pnpm.io/?from=https://github.com/RealSpeaker/telegraf-session-local/): `npm i -g pnpm` and then `pnpm i -S telegraf-session-local`.  
+> It's in-place replacement for `npm`, [faster and better](https://pnpm.io/benchmarks) than `npm`/`yarn`, and [saves your disk space](https://pnpm.io/motivation#saving-disk-space-and-boosting-installation-speed).
+---
+### 📚 [Documentation & API](http://realspeaker.github.io/telegraf-session-local/)
+---
 ## 👀 Quick-start example
 
 ```js
-const {Telegraf} = require('telegraf')
+const { Telegraf } = require('telegraf')
 const LocalSession = require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
@@ -57,10 +60,10 @@ bot.command('/remove', (ctx) => {
 bot.launch()
 ```
 
-## 💡 Full example
+## 📄 Full example
 
 ```js
-const {Telegraf} = require('telegraf')
+const { Telegraf } = require('telegraf')
 const LocalSession = require('telegraf-session-local')
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
@@ -91,13 +94,13 @@ localSession.DB.then(DB => {
   // console.log(DB.get('sessions').getById('1:1').value())
 })
 
-// Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` name
+// Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` value: `data`, instead of `session`
 bot.use(localSession.middleware(property))
 
 bot.on('text', (ctx, next) => {
   ctx[property].counter = ctx[property].counter || 0
   ctx[property].counter++
-  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
+  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx[property].counter}\``)
   // Writing message to Array `messages` into database which already has sessions Array
   ctx[property + 'DB'].get('messages').push([ctx.message]).write()
   // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`
