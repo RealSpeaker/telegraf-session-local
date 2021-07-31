@@ -1,7 +1,10 @@
-import {readFile} from 'fs/promises'
+import {promises} from 'fs'
 
 import {Writer} from 'steno'
 import debugPackage from 'debug'
+
+// TODO: use from 'fs/promises' once Node.js 12 support is dropped
+const {readFile} = promises
 
 const debug = debugPackage('telegraf:session-local')
 
