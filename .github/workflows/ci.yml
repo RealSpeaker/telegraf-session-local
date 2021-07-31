@@ -6,8 +6,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version:
+          - 16
+          - 14
+          - 12
     name: Node.js ${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v2
