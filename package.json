@@ -1,8 +1,7 @@
 {
   "name": "telegraf-session-local",
   "version": "2.1.0",
-  "description": "Telegraf local sessions middleware with multiple supported storage types (Memory/FileSync/FileAsync/...) using lowdb",
-  "main": "lib/session.js",
+  "description": "Telegraf local sessions middleware",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RealSpeaker/telegraf-session-local.git"
@@ -11,15 +10,14 @@
     "telegram",
     "telegram bot",
     "telegraf",
+    "grammy",
     "telegraf session",
     "telegraf session local",
     "session",
     "middleware",
     "database",
     "local database",
-    "json",
-    "lowdb",
-    "db"
+    "json"
   ],
   "author": "Tema Smirnov <npm.tema@smirnov.one>",
   "license": "MIT",
@@ -30,42 +28,84 @@
     "url": "https://github.com/RealSpeaker/telegraf-session-local/issues"
   },
   "homepage": "https://realspeaker.github.io/telegraf-session-local/",
+  "files": [
+    "dist/source",
+    "!*.test.*"
+  ],
+  "scripts": {
+    "build": "del-cli dist && tsc",
+    "prepack": "npm run build",
+    "lint": "xo",
+    "test": "tsc --sourceMap && xo && nyc mocha dist/tests --require should",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "release": "np"
+  },
+  "type": "commonjs",
   "engines": {
     "node": ">=12"
   },
-  "files": [
-    "lib"
-  ],
-  "scripts": {
-    "lint": "npx eslint . --fix",
-    "test": "npx nyc mocha tests --require should",
-    "coverage": "npx nyc report --reporter=lcovonly",
-    "jsdoc": "npx jsdoc -c jsdoc.json",
-    "version": "npm run jsdoc && git add docs",
-    "release": "npx np"
-  },
   "dependencies": {
-    "@types/lowdb": "^1.0.9",
-    "lowdb": "^1.0.0"
-  },
-  "peerDependencies": {
-    "debug": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "telegraf": "^3.38.0 || ^4.0.0"
+    "debug": "^4.0.0",
+    "steno": "^1.0.0"
   },
   "devDependencies": {
-    "docdash": "^1.2.0",
-    "eslint": "^7.30.0",
-    "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-mocha": "^9.0.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.1.0",
-    "jsdoc": "^3.6.7",
+    "@sindresorhus/tsconfig": "^1.0.2",
+    "@types/debug": "^4.1.5",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^14.14.31",
+    "coveralls": "^3.1.0",
+    "del-cli": "^4.0.0",
+    "grammy": "^1.2.0",
     "mocha": "^9.0.2",
     "np": "*",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
-    "telegraf": "^4.4.0"
+    "telegraf": "^4.0.2",
+    "typescript": "^4.0.2",
+    "xo": "^0.42.0"
+  },
+  "main": "dist/source",
+  "types": "dist/source",
+  "nyc": {
+    "all": true,
+    "include": [
+      "dist",
+      "source"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  },
+  "xo": {
+    "space": true,
+    "semicolon": false,
+    "rules": {
+      "@typescript-eslint/prefer-readonly-parameter-types": "warn",
+      "unicorn/prefer-node-protocol": "off"
+    },
+    "overrides": [
+      {
+        "files": [
+          "examples/**/*.*"
+        ],
+        "rules": {
+          "@typescript-eslint/prefer-readonly-parameter-types": "off"
+        }
+      },
+      {
+        "files": [
+          "**/*.test.*",
+          "tests/**/*.*"
+        ],
+        "rules": {
+          "@typescript-eslint/no-floating-promises": "off",
+          "@typescript-eslint/no-unsafe-member-access": "off",
+          "@typescript-eslint/prefer-readonly-parameter-types": "off",
+          "no-undef": "off"
+        }
+      }
+    ]
   },
   "np": {
     "yarn": false

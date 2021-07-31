@@ -6,8 +6,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version:
+          - 16
+          - 14
+          - 12
     name: Node.js ${{ matrix.node-version }}
     steps:
       - uses: actions/checkout@v2
@@ -38,7 +42,7 @@ jobs:
       # Here we will use pnpx to run executables, instead of running `npm run <script>` which utilizes npx
       - name: Run tests
         run: |
-          pnpx nyc mocha tests --require should
+          pnpm test
           pnpx nyc report --reporter=lcovonly
         timeout-minutes: 5
 

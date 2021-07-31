@@ -12,12 +12,7 @@
 
 ### ⚡️ Features
 
-- Any type of storage: `Memory`, `FileSync`, `FileAsync`, ... (implement your own)
-- Any format you want: `JSON`, `BSON`, `YAML`, `XML`, ... (implement your own)
-- Shipped together with power of `lodash`
-- Supports basic DB-like operations (thanks to [lodash-id](https://github.com/typicode/lodash-id)):
-
-  `getById`, `insert`, `upsert`, `updateById`, `updateWhere`, `replaceById`, `removeById`, `removeWhere`, `createId`,
+… all gone?
 
 ## 🚀 Installation
 
@@ -25,7 +20,7 @@
 $ npm install -S telegraf-session-local
 ```
 
-> 💡 TIP: We recommend [`pnpm` package manager](https://pnpm.io/?from=https://github.com/RealSpeaker/telegraf-session-local/): `npm i -g pnpm` and then `pnpm i -S telegraf-session-local`.  
+> 💡 TIP: We recommend [`pnpm` package manager](https://pnpm.io/?from=https://github.com/RealSpeaker/telegraf-session-local/): `npm i -g pnpm` and then `pnpm i -S telegraf-session-local`.
 > It's in-place replacement for `npm`, [faster and better](https://pnpm.io/benchmarks) than `npm`/`yarn`, and [saves your disk space](https://pnpm.io/motivation#saving-disk-space-and-boosting-installation-speed).
 ---
 ### 📚 [Documentation & API](http://realspeaker.github.io/telegraf-session-local/)
@@ -33,28 +28,22 @@ $ npm install -S telegraf-session-local
 ## 👀 Quick-start example
 
 ```js
-const { Telegraf } = require('telegraf')
-const LocalSession = require('telegraf-session-local')
+import {Telegraf} from 'telegraf'
+import {LocalSession} from 'telegraf-session-local'
 
-const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
+const bot = new Telegraf(process.env['BOT_TOKEN']!) // Your Bot token here
 
-bot.use((new LocalSession({ database: 'example_db.json' })).middleware())
+bot.use((new LocalSession({database: 'example_db.json'})).middleware())
 
-bot.on('text', (ctx, next) => {
-  ctx.session.counter = ctx.session.counter || 0
+bot.on('text', async (ctx, next) => {
+  ctx.session.counter = ctx.session.counter ?? 0
   ctx.session.counter++
-  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
+  await ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.session.counter}\``)
   return next()
 })
 
-bot.command('/stats', (ctx) => {
-  ctx.replyWithMarkdown(`Database has \`${ctx.session.counter}\` messages from @${ctx.from.username || ctx.from.id}`)
-})
-
-bot.command('/remove', (ctx) => {
-  ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.session)}\``)
-  // Setting session to null, undefined or empty object/array will trigger removing it from database
-  ctx.session = null
+bot.command('/stats', async (ctx) => {
+  await ctx.replyWithMarkdown(`Database has \`${String(ctx.session.counter)}\` messages from @${ctx.from.username ?? ctx.from.id}`)
 })
 
 bot.launch()
@@ -62,69 +51,53 @@ bot.launch()
 
 ## 📄 Full example
 
-```js
-const { Telegraf } = require('telegraf')
-const LocalSession = require('telegraf-session-local')
+```ts
+import {Telegraf, Context as TelegrafContext} from 'telegraf'
+import {LocalSession} from 'telegraf-session-local'
 
-const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
+interface Session {
+  counter?: number;
+}
 
-// Name of session property object in Telegraf Context (default: 'session')
-const property = 'data'
+interface MyContext extends TelegrafContext {
+  data: Session;
+}
 
-const localSession = new LocalSession({
+const bot = new Telegraf<MyContext>(process.env['BOT_TOKEN']!) // Your Bot token here
+
+const localSession = new LocalSession<MyContext, Session>({
   // Database name/path, where sessions will be located (default: 'sessions.json')
   database: 'example_db.json',
   // Name of session property object in Telegraf Context (default: 'session')
-  property: 'session',
-  // Type of lowdb storage (default: 'storageFileSync')
-  storage: LocalSession.storageFileAsync,
-  // Format of storage/database (default: JSON.stringify / JSON.parse)
-  format: {
-    serialize: (obj) => JSON.stringify(obj, null, 2), // null & 2 for pretty-formatted JSON
-    deserialize: (str) => JSON.parse(str),
-  },
-  // We will use `messages` array in our database to store user messages using exported lowdb instance from LocalSession via Telegraf Context
-  state: { messages: [] }
-})
-
-// Wait for database async initialization finished (storageFileAsync or your own asynchronous storage adapter)
-localSession.DB.then(DB => {
-  // Database now initialized, so now you can retrieve anything you want from it
-  console.log('Current LocalSession DB:', DB.value())
-  // console.log(DB.get('sessions').getById('1:1').value())
+  property: 'data',
 })
 
 // Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` value: `data`, instead of `session`
-bot.use(localSession.middleware(property))
+bot.use(localSession.middleware())
 
-bot.on('text', (ctx, next) => {
-  ctx[property].counter = ctx[property].counter || 0
-  ctx[property].counter++
-  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx[property].counter}\``)
-  // Writing message to Array `messages` into database which already has sessions Array
-  ctx[property + 'DB'].get('messages').push([ctx.message]).write()
-  // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`
-  // ctx.dataDB.get('messages').push([ctx.message]).write()
-
+bot.on('text', async (ctx, next) => {
+  ctx.data.counter = ctx.data.counter ?? 0
+  ctx.data.counter++
+  await ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx.data.counter}\``)
   return next()
 })
 
-bot.command('/stats', (ctx) => {
-  let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
-  msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username || ctx.from.id}`
-  ctx.replyWithMarkdown(msg)
+bot.command('/stats', async (ctx) => {
+  let msg = 'Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (`ctx`), named `data`\n'
+  msg += `Database has \`${String(ctx.data.counter)}\` messages from @${ctx.from.username ?? ctx.from.id}`
+  await ctx.replyWithMarkdown(msg)
 })
-bot.command('/remove', (ctx) => {
-  ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
+bot.command('/remove', async (ctx) => {
+  await ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx.data)}\``);
   // Setting session to null, undefined or empty object/array will trigger removing it from database
-  ctx[property] = null
+  ctx.data = null
 })
 
 bot.launch()
 ```
 
 #### Another examples located in `/examples` folder (PRs welcome)
-Also, you may read comments in  [/lib/session.js](https://github.com/RealSpeaker/telegraf-session-local/blob/master/lib/session.js)
+Also, you may read comments in  [/source/index.ts](https://github.com/RealSpeaker/telegraf-session-local/blob/master/source/index.ts)
 
 #
 
