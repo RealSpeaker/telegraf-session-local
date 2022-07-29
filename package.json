@@ -65,7 +65,7 @@
     "np": "*",
     "nyc": "^15.1.0",
     "should": "^13.2.3",
-    "telegraf": "^4.8.5"
+    "telegraf": "^4.8.6"
   },
   "np": {
     "yarn": false
