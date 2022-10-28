@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@types/lowdb": "^1.0.9",
-    "lowdb": "^1.0.0"
+    "lowdb": "^5.0.5"
   },
   "peerDependencies": {
     "debug": "^2.0.0 || ^3.0.0 || ^4.0.0",
