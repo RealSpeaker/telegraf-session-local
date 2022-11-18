@@ -53,7 +53,7 @@
     "telegraf": "^3.38.0 || ^4.0.0"
   },
   "devDependencies": {
-    "docdash": "^1.2.0",
+    "docdash": "^2.0.0",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.26.0",
