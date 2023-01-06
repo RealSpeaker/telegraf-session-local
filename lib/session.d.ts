@@ -16,7 +16,7 @@ declare module 'telegraf-session-local' {
     getSessionKey?: (ctx: Context) => string
   }
 
-  class LocalSession<TSession> {
+  export class LocalSession<TSession> {
     public DB: unknown
 
     constructor(options?: LocalSessionOptions<TSession>)
@@ -30,6 +30,4 @@ declare module 'telegraf-session-local' {
     static get storageMemory(): AdapterSync
     static get storageBase(): BaseAdapter
   }
-
-  export = LocalSession
 }
