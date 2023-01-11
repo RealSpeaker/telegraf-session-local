@@ -3,9 +3,6 @@ const LocalSession = require('../lib/session') // require('telegraf-session-loca
 
 const bot = new Telegraf(process.env.BOT_TOKEN) // Your Bot token here
 
-// Name of session property object in Telegraf Context (default: 'session')
-const property = 'data'
-
 const localSession = new LocalSession({
   // Database name/path, where sessions will be located (default: 'sessions.json')
   database: 'example_db.json',
@@ -29,30 +26,28 @@ localSession.DB.then(DB => {
   // console.log(DB.get('sessions').getById('1:1').value())
 })
 
-// Telegraf will use `telegraf-session-local` configured above middleware with overrided `property` value: `data`, instead of `session`
-bot.use(localSession.middleware(property))
+// Telegraf will use `telegraf-session-local` configured above middleware
+bot.use(localSession.middleware())
 
 bot.on('text', (ctx, next) => {
-  ctx[property].counter = ctx[property].counter || 0
-  ctx[property].counter++
-  ctx.replyWithMarkdown(`Counter updated, new value: \`${ctx[property].counter}\``)
+  ctx.session.counter = ctx.session.counter || 0
+  ctx.session.counter++
+  ctx.replyWithMarkdownV2(`Counter updated, new value: \`${ctx.session.counter}\``)
   // Writing message to Array `messages` into database which already has sessions Array
-  ctx[property + 'DB'].get('messages').push([ctx.message]).write()
-  // `property`+'DB' is a name of property which contains lowdb instance, default = `sessionDB`, in current example = `dataDB`
-  // ctx.dataDB.get('messages').push([ctx.message]).write()
+  ctx.sessionDB.get('messages').push([ctx.message]).write()
+  // `property`+'DB' is a name of ctx property which contains lowdb instance, default = `sessionDB`
 
   return next()
 })
 
 bot.command('/stats', (ctx) => {
-  let msg = `Using session object from [Telegraf Context](http://telegraf.js.org/context.html) (\`ctx\`), named \`${property}\`\n`
-  msg += `Database has \`${ctx[property].counter}\` messages from @${ctx.from.username || ctx.from.id}`
-  ctx.replyWithMarkdown(msg)
+  ctx.replyWithMarkdownV2(`Session has \`${ctx.session.counter}\` messages from @${ctx.from.username || ctx.from.id}`)
 })
+
 bot.command('/remove', (ctx) => {
-  ctx.replyWithMarkdown(`Removing session from database: \`${JSON.stringify(ctx[property])}\``)
+  ctx.replyWithMarkdownV2(`Removing session from lowdb database: \`${JSON.stringify(ctx.session)}\``)
   // Setting session to null, undefined or empty object/array will trigger removing it from database
-  ctx[property] = null
+  ctx.session = null
 })
 
 bot.launch()
