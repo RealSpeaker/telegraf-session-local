@@ -3,6 +3,7 @@
   "version": "2.1.0",
   "description": "Telegraf local sessions middleware with multiple supported storage types (Memory/FileSync/FileAsync/...) using lowdb",
   "main": "lib/session.js",
+  "types": "lib/session.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RealSpeaker/telegraf-session-local.git"
