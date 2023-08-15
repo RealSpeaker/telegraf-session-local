@@ -13,27 +13,31 @@ describe('lodash + lodash-id', () => {
       posts: [
         { id: 1, body: 'one', published: true },
         { id: 2, body: 'two', published: false },
-        { id: 3, body: 'three', published: false }
+        { id: 3, body: 'three', published: false },
       ],
       comments: [
         { id: 1, body: 'foo', postId: 1 },
-        { id: 2, body: 'bar', postId: 2 }
+        { id: 2, body: 'bar', postId: 2 },
       ],
       authors: [
         { id: '1', name: 'foo' },
-        { id: '2', name: 'bar' }
+        { id: '2', name: 'bar' },
       ],
       tags: [
         { id: 1, text: '#reddit' },
         { id: '1337', text: '#9gag' },
-        { text: '#medium' }
-      ]
+        { text: '#medium' },
+      ],
     }
   })
 
   describe('id', () => {
-    beforeEach(() => { _.id = 'body' })
-    afterEach(() => { delete _.id })
+    beforeEach(() => {
+      _.id = 'body'
+    })
+    afterEach(() => {
+      delete _.id
+    })
 
     it('is the property used by get to find document', () => {
       const expect = db.posts[0]
@@ -192,7 +196,7 @@ describe('lodash + lodash-id', () => {
         1: 'one',
         test: true,
         hello: 'world',
-        leet: 1337
+        leet: 1337,
       }
       const dst = {}
       _.__update(dst, src)

@@ -1,9 +1,9 @@
 /* eslint object-curly-spacing: ["error", "always"] */
 const
   { Telegraf } = require('telegraf'),
-  LocalSession = require('../lib/session'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
+  LocalSession = require('../lib/session'),
   options = { storage: LocalSession.storageMemory }
 
 describe('Telegraf Session local : General', () => {
@@ -33,11 +33,11 @@ describe('Telegraf Session local : General', () => {
       format: {
         // By default lowdb uses pretty-printed JSON string: JSON.stringify(obj, null, 2)
         // We will override that behaviour calling it `oneline`, making one-lined JSON string
-        serialize: function oneline (obj) {
+        serialize: function oneline(obj) {
           return JSON.stringify(obj)
         },
-        deserialize: JSON.parse
-      }
+        deserialize: JSON.parse,
+      },
     })
     bot.on('text', session.middleware(), (ctx) => {
       should.exist(ctx.session)
@@ -107,14 +107,17 @@ describe('Telegraf Session local : General', () => {
 
   it('Should detect if object is Promise/like or not', (done) => {
     const isPromise = require('../lib/session').isPromise
-    function notPromise () { return null }
-    function promise () { return new Promise((resolve, reject) => resolve(null)) }
-    function promiseLike () { return { then: cb => cb(null) } }
+
+    const notPromise = () => null
+    const promise = () => new Promise(resolve => resolve(null))
+    const promiseLike = () => ({ then: cb => cb(null) })
+
     isPromise(undefined).should.be.equal(false)
     isPromise(true).should.be.equal(false)
     isPromise(notPromise()).should.be.equal(false)
     isPromise(promise()).should.be.equal(true)
     isPromise(promiseLike()).should.be.equal(true)
+
     done()
   })
 })

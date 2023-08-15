@@ -1,21 +1,21 @@
 /* eslint object-curly-spacing: ["error", "always"] */
 const
   { Telegraf } = require('telegraf'),
-  LocalSession = require('../lib/session'),
   should = require('should'),
-  debug = require('debug')('telegraf:session-local:test')
+  debug = require('debug')('telegraf:session-local:test'),
+  LocalSession = require('../lib/session')
 
 // Custom adapter, it's like storageMemory
 // We even no need to extend storageBase, it's just for example purposes here
 class storageCustom extends LocalSession.storageBase {
-  constructor () {
+  constructor() {
     super()
     this.serialize = require('lowdb/adapters/_stringify')
   }
 
-  read () { return this.defaultValue }
+  read() { return this.defaultValue }
 
-  write () {}
+  write() {}
 }
 
 const options = { storage: storageCustom }

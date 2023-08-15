@@ -1,9 +1,9 @@
 /* eslint object-curly-spacing: ["error", "always"] */
 const
   { Telegraf } = require('telegraf'),
-  LocalSession = require('../lib/session'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
+  LocalSession = require('../lib/session'),
   options = { database: 'test_async_db.json', storage: LocalSession.storageFileAsync }
 
 let bot = {}
@@ -11,7 +11,7 @@ const localSession = new LocalSession(options)
 
 // Wait for database async initialization finished
 before((done) => {
-  localSession.DB.then((DB) => { done() })
+  localSession.DB.then(() => done())
 })
 
 describe('Telegraf Session local : storageFileAsync', () => {
@@ -84,7 +84,7 @@ describe('Telegraf Session local : storageFileAsync', () => {
     const _options = Object.assign({ storage: LocalSession.storagefileAsync }, options)
     const _localSession = new LocalSession(_options)
     // Wait for database async initialization finished
-    _localSession.DB.then(async (DB) => {
+    _localSession.DB.then(async () => {
       // console.log(DB.get('sessions').getById('1:1').value())
       const key = '1:1' // ChatID:FromID
       const session = _localSession.getSession(key)

@@ -1,3 +1,4 @@
+const process = require('node:process')
 const { Telegraf } = require('telegraf')
 const LocalSession = require('../lib/session') // require('telegraf-session-local')
 

@@ -1,9 +1,9 @@
 /* eslint object-curly-spacing: ["error", "always"] */
 const
   { Telegraf } = require('telegraf'),
-  LocalSession = require('../lib/session'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
+  LocalSession = require('../lib/session'),
   options = { storage: LocalSession.storageMemory }
 
 describe('Telegraf Session local : storageMemory', () => {
@@ -16,7 +16,7 @@ describe('Telegraf Session local : storageMemory', () => {
     debug('getSession %O', session)
     should.exist(session)
     session.foo = 42
-    localSession.saveSession(key, session).then(_session => {
+    localSession.saveSession(key, session).then((_session) => {
       debug('Saved session %O', _session)
       should.exist(_session)
       _session.data.should.be.deepEqual({ foo: 42 })

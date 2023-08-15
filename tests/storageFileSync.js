@@ -1,9 +1,9 @@
 /* eslint object-curly-spacing: ["error", "always"] */
 const
   { Telegraf } = require('telegraf'),
-  LocalSession = require('../lib/session'),
   should = require('should'),
   debug = require('debug')('telegraf:session-local:test'),
+  LocalSession = require('../lib/session'),
   options = { database: 'test_sync_db.json', storage: LocalSession.storageFileSync }
 
 let bot = {}
