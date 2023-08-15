@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    // improved icons for files and folders
+    "vscode-icons-team.vscode-icons",
+    // to support .env file syntax
+    "mikestead.dotenv",
+    // to support .editorconfig
+    "EditorConfig.EditorConfig",
+    // to view TODO comments in a tree/list view
+    "Gruntfuggly.todo-tree",
+    // to improve IntelliSense hints
+    "visualstudioexptteam.vscodeintellicode",
+    // ESlint linter
+    "dbaeumer.vscode-eslint"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "git.enableCommitSigning": true,
+  "workbench.iconTheme": "vscode-icons",
+  "editor.tabSize": 2,
+  "editor.renderWhitespace": "all",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
+    // "source.addMissingImports": false
+  },
+  "prettier.enable": false,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "editor.formatOnSave": false,
+  "editor.formatOnSaveMode": "file",
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.associations": {
+    ".env": "dotenv",
+    "*.env": "dotenv",
+    "*.env.example": "dotenv"
+  },
+  "files.exclude": {
+    "**/.eslintcache": true,
+    "**/.gitignore": true,
+    "**/.nyc_output": true,
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/pnpm-lock.lock": true,
+    "**/coverage": true
+  },
+  "files.watcherExclude": {
+    "**/.eslintcache": true,
+    "**/.gitignore": true,
+    "**/.nyc_output": true,
+    "**/dist": true,
+    "**/node_modules": true,
+    "**/pnpm-lock.lock": true,
+    "**/coverage": true
+  },
+  "javascript.format.enable": false,
+
+  "javascript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "javascript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "editor.inlayHints.padding": true,
+
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "css.validate": false,
+  "diffEditor.ignoreTrimWhitespace": false,
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml"
+  ],
+  "gotoAlias.closeDts": true
+}
