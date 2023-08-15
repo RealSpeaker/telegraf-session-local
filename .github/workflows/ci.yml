@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14, 16, 18]
+        node-version: [14, 16, 18, 20]
     name: Node.js ${{ matrix.node-version }}
     steps:
       - name: Checkout
@@ -22,7 +22,7 @@ jobs:
         uses: pnpm/action-setup@v2
         id: pnpm-install
         with:
-          version: 7
+          # version: 8
           run_install: false
 
       - name: Get pnpm store directory
